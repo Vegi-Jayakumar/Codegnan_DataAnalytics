@@ -1,0 +1,503 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| cg_mysql           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.01 sec)
+
+mysql> use cg_mysql;
+Database changed
+mysql> show tables;
++--------------------+
+| Tables_in_cg_mysql |
++--------------------+
+| company_staff      |
+| employees          |
++--------------------+
+2 rows in set (0.01 sec)
+
+mysql> create table staff(
+    -> EMPID char(5) primary key,
+    -> FIRSTNAME varchar(50),
+    -> LASTNAME varchar(30),
+    -> AGE int,
+    -> DOJ date,
+    -> ADDRESS tinyint,
+    -> DEPT varchar(20),
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 9
+mysql> create table staff(
+    -> EMPID char(5) primary key,
+    -> FIRSTNAME varchar(50),
+    -> LASTNAME varchar(30),
+    -> AGE int,
+    -> DOJ date,
+    -> ADDRESS tinyint,
+    -> DEPT varchar(20)
+    -> );
+Query OK, 0 rows affected (0.14 sec)
+
+mysql> insert into staff(EMPID,FIRSTNAME,LASTNAME,AGE,DOJ,ADDRESS,DEPT) values('E001','Arjun','Sarkar',22,'2026-04-20','VSKP','Testing');
+ERROR 1366 (HY000): Incorrect integer value: 'VSKP' for column 'ADDRESS' at row 1
+mysql> alter table staff modify ADDRESS tinytext;
+Query OK, 0 rows affected (0.16 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into staff(EMPID,FIRSTNAME,LASTNAME,AGE,DOJ,ADDRESS,DEPT) values('E001','Arjun','Sarkar',22,'2026-04-20','VSKP','Testing');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from staff;
++-------+-----------+----------+------+------------+---------+---------+
+| EMPID | FIRSTNAME | LASTNAME | AGE  | DOJ        | ADDRESS | DEPT    |
++-------+-----------+----------+------+------------+---------+---------+
+| E001  | Arjun     | Sarkar   |   22 | 2026-04-20 | VSKP    | Testing |
++-------+-----------+----------+------+------------+---------+---------+
+1 row in set (0.00 sec)
+
+mysql> insert into staff(EMPID,FIRSTNAME,LASTNAME,AGE,DOJ,ADDRESS,DEPT) values('E001','Arjun','Sarkar',22,'2026-04-20','VSKP','Testing');
+ERROR 1062 (23000): Duplicate entry 'E001' for key 'staff.PRIMARY'
+mysql> insert into staff(EMPID,FIRSTNAME,LASTNAME,AGE,DOJ,ADDRESS,DEPT) values
+    -> values('E001','Arjun','Sarkar',22,'2026-04-20','VSKP','Testing'),
+    -> ^C
+mysql> insert into staff(EMPID,FIRSTNAME,LASTNAME,AGE,DOJ,ADDRESS,DEPT) values
+    -> ('E002','Sanjay','Sahoo',25,'2026-04-18','VSKP','Security'),
+    -> ('E003','Devaradha','Khansar',23,'2026-04-10','VSKP','Security');
+Query OK, 2 rows affected (0.05 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from staff;
++-------+-----------+----------+------+------------+---------+----------+
+| EMPID | FIRSTNAME | LASTNAME | AGE  | DOJ        | ADDRESS | DEPT     |
++-------+-----------+----------+------+------------+---------+----------+
+| E001  | Arjun     | Sarkar   |   22 | 2026-04-20 | VSKP    | Testing  |
+| E002  | Sanjay    | Sahoo    |   25 | 2026-04-18 | VSKP    | Security |
+| E003  | Devaradha | Khansar  |   23 | 2026-04-10 | VSKP    | Security |
++-------+-----------+----------+------+------------+---------+----------+
+3 rows in set (0.00 sec)
+
+mysql> insert into staff values
+    -> ('E004','Narendra','Modi',56,'2026-04-01','VSKP','Operations'),
+    -> ('E005','Amit','Shah',54,'2026-04-01','VSKP','Internal Affairs'),
+    -> ('E006','Shashi','Tharoor',45,'2026-04-01','VSKP','HR');
+Query OK, 3 rows affected (0.04 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from staff;
++-------+-----------+----------+------+------------+---------+------------------+
+| EMPID | FIRSTNAME | LASTNAME | AGE  | DOJ        | ADDRESS | DEPT             |
++-------+-----------+----------+------+------------+---------+------------------+
+| E001  | Arjun     | Sarkar   |   22 | 2026-04-20 | VSKP    | Testing          |
+| E002  | Sanjay    | Sahoo    |   25 | 2026-04-18 | VSKP    | Security         |
+| E003  | Devaradha | Khansar  |   23 | 2026-04-10 | VSKP    | Security         |
+| E004  | Narendra  | Modi     |   56 | 2026-04-01 | VSKP    | Operations       |
+| E005  | Amit      | Shah     |   54 | 2026-04-01 | VSKP    | Internal Affairs |
+| E006  | Shashi    | Tharoor  |   45 | 2026-04-01 | VSKP    | HR               |
++-------+-----------+----------+------+------------+---------+------------------+
+6 rows in set (0.00 sec)
+
+mysql> insert into staff (EMPID,LASTNAME,AGE,DOJ,DEPT) values
+    -> ('E007','chadda',22,'2026-04-15','Marketing');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select * from staff;
++-------+-----------+----------+------+------------+---------+------------------+
+| EMPID | FIRSTNAME | LASTNAME | AGE  | DOJ        | ADDRESS | DEPT             |
++-------+-----------+----------+------+------------+---------+------------------+
+| E001  | Arjun     | Sarkar   |   22 | 2026-04-20 | VSKP    | Testing          |
+| E002  | Sanjay    | Sahoo    |   25 | 2026-04-18 | VSKP    | Security         |
+| E003  | Devaradha | Khansar  |   23 | 2026-04-10 | VSKP    | Security         |
+| E004  | Narendra  | Modi     |   56 | 2026-04-01 | VSKP    | Operations       |
+| E005  | Amit      | Shah     |   54 | 2026-04-01 | VSKP    | Internal Affairs |
+| E006  | Shashi    | Tharoor  |   45 | 2026-04-01 | VSKP    | HR               |
+| E007  | NULL      | chadda   |   22 | 2026-04-15 | NULL    | Marketing        |
++-------+-----------+----------+------+------------+---------+------------------+
+7 rows in set (0.00 sec)
+
+mysql> update table staff set FIRSTNAME='Raghav' where EMPID='E007';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table staff set FIRSTNAME='Raghav' where EMPID='E007'' at line 1
+mysql> update staff set FIRSTNAME='Raghav' where EMPID='E007';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from staff;
++-------+-----------+----------+------+------------+---------+------------------+
+| EMPID | FIRSTNAME | LASTNAME | AGE  | DOJ        | ADDRESS | DEPT             |
++-------+-----------+----------+------+------------+---------+------------------+
+| E001  | Arjun     | Sarkar   |   22 | 2026-04-20 | VSKP    | Testing          |
+| E002  | Sanjay    | Sahoo    |   25 | 2026-04-18 | VSKP    | Security         |
+| E003  | Devaradha | Khansar  |   23 | 2026-04-10 | VSKP    | Security         |
+| E004  | Narendra  | Modi     |   56 | 2026-04-01 | VSKP    | Operations       |
+| E005  | Amit      | Shah     |   54 | 2026-04-01 | VSKP    | Internal Affairs |
+| E006  | Shashi    | Tharoor  |   45 | 2026-04-01 | VSKP    | HR               |
+| E007  | Raghav    | chadda   |   22 | 2026-04-15 | NULL    | Marketing        |
++-------+-----------+----------+------+------------+---------+------------------+
+7 rows in set (0.00 sec)
+
+mysql> select * from employees where EMPID='E007';
+Empty set (0.01 sec)
+
+mysql> select * from staff where EMPID='E007';
++-------+-----------+----------+------+------------+---------+-----------+
+| EMPID | FIRSTNAME | LASTNAME | AGE  | DOJ        | ADDRESS | DEPT      |
++-------+-----------+----------+------+------------+---------+-----------+
+| E007  | Raghav    | chadda   |   22 | 2026-04-15 | NULL    | Marketing |
++-------+-----------+----------+------+------------+---------+-----------+
+1 row in set (0.00 sec)
+
+mysql> update staff set LASTNAME='Kumar' where EMPID='E002';
+Query OK, 1 row affected (0.06 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from staff where EMPID='E002';
++-------+-----------+----------+------+------------+---------+----------+
+| EMPID | FIRSTNAME | LASTNAME | AGE  | DOJ        | ADDRESS | DEPT     |
++-------+-----------+----------+------+------------+---------+----------+
+| E002  | Sanjay    | Kumar    |   25 | 2026-04-18 | VSKP    | Security |
++-------+-----------+----------+------+------------+---------+----------+
+1 row in set (0.00 sec)
+
+mysql> update staff set ADDRESS='VSPK' where ADDRESS is NULL;
+Query OK, 1 row affected (0.05 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from staff
+    -> ;
++-------+-----------+----------+------+------------+---------+------------------+
+| EMPID | FIRSTNAME | LASTNAME | AGE  | DOJ        | ADDRESS | DEPT             |
++-------+-----------+----------+------+------------+---------+------------------+
+| E001  | Arjun     | Sarkar   |   22 | 2026-04-20 | VSKP    | Testing          |
+| E002  | Sanjay    | Kumar    |   25 | 2026-04-18 | VSKP    | Security         |
+| E003  | Devaradha | Khansar  |   23 | 2026-04-10 | VSKP    | Security         |
+| E004  | Narendra  | Modi     |   56 | 2026-04-01 | VSKP    | Operations       |
+| E005  | Amit      | Shah     |   54 | 2026-04-01 | VSKP    | Internal Affairs |
+| E006  | Shashi    | Tharoor  |   45 | 2026-04-01 | VSKP    | HR               |
+| E007  | Raghav    | chadda   |   22 | 2026-04-15 | VSPK    | Marketing        |
++-------+-----------+----------+------+------------+---------+------------------+
+7 rows in set (0.00 sec)
+
+mysql> update staff set DOJ='2026-09-05' where FIRSTNAME='Sanjay';
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from staff;
++-------+-----------+----------+------+------------+---------+------------------+
+| EMPID | FIRSTNAME | LASTNAME | AGE  | DOJ        | ADDRESS | DEPT             |
++-------+-----------+----------+------+------------+---------+------------------+
+| E001  | Arjun     | Sarkar   |   22 | 2026-04-20 | VSKP    | Testing          |
+| E002  | Sanjay    | Kumar    |   25 | 2026-09-05 | VSKP    | Security         |
+| E003  | Devaradha | Khansar  |   23 | 2026-04-10 | VSKP    | Security         |
+| E004  | Narendra  | Modi     |   56 | 2026-04-01 | VSKP    | Operations       |
+| E005  | Amit      | Shah     |   54 | 2026-04-01 | VSKP    | Internal Affairs |
+| E006  | Shashi    | Tharoor  |   45 | 2026-04-01 | VSKP    | HR               |
+| E007  | Raghav    | chadda   |   22 | 2026-04-15 | VSPK    | Marketing        |
++-------+-----------+----------+------+------------+---------+------------------+
+7 rows in set (0.00 sec)
+
+mysql> update staff set ADDRESS='VSKP' where DEPT='Marketing';
+Query OK, 1 row affected (0.05 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from staff;
++-------+-----------+----------+------+------------+---------+------------------+
+| EMPID | FIRSTNAME | LASTNAME | AGE  | DOJ        | ADDRESS | DEPT             |
++-------+-----------+----------+------+------------+---------+------------------+
+| E001  | Arjun     | Sarkar   |   22 | 2026-04-20 | VSKP    | Testing          |
+| E002  | Sanjay    | Kumar    |   25 | 2026-09-05 | VSKP    | Security         |
+| E003  | Devaradha | Khansar  |   23 | 2026-04-10 | VSKP    | Security         |
+| E004  | Narendra  | Modi     |   56 | 2026-04-01 | VSKP    | Operations       |
+| E005  | Amit      | Shah     |   54 | 2026-04-01 | VSKP    | Internal Affairs |
+| E006  | Shashi    | Tharoor  |   45 | 2026-04-01 | VSKP    | HR               |
+| E007  | Raghav    | chadda   |   22 | 2026-04-15 | VSKP    | Marketing        |
++-------+-----------+----------+------+------------+---------+------------------+
+7 rows in set (0.00 sec)
+
+mysql> delete from staff where EMPID = 'E002';
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from staff;
++-------+-----------+----------+------+------------+---------+------------------+
+| EMPID | FIRSTNAME | LASTNAME | AGE  | DOJ        | ADDRESS | DEPT             |
++-------+-----------+----------+------+------------+---------+------------------+
+| E001  | Arjun     | Sarkar   |   22 | 2026-04-20 | VSKP    | Testing          |
+| E003  | Devaradha | Khansar  |   23 | 2026-04-10 | VSKP    | Security         |
+| E004  | Narendra  | Modi     |   56 | 2026-04-01 | VSKP    | Operations       |
+| E005  | Amit      | Shah     |   54 | 2026-04-01 | VSKP    | Internal Affairs |
+| E006  | Shashi    | Tharoor  |   45 | 2026-04-01 | VSKP    | HR               |
+| E007  | Raghav    | chadda   |   22 | 2026-04-15 | VSKP    | Marketing        |
++-------+-----------+----------+------+------------+---------+------------------+
+6 rows in set (0.00 sec)
+
+mysql> show tables;
++--------------------+
+| Tables_in_cg_mysql |
++--------------------+
+| company_staff      |
+| employees          |
+| staff              |
++--------------------+
+3 rows in set (0.01 sec)
+
+mysql> drop table employees;
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> CREATE TABLE employees (
+    ->     emp_id INT PRIMARY KEY,
+    ->     emp_name VARCHAR(100),
+    ->     department VARCHAR(50),
+    ->     job_role VARCHAR(50),
+    ->     salary DECIMAL(10,2),
+    ->     joining_date DATE,
+    ->     city VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> 
+mysql> 
+mysql> INSERT INTO employees
+    -> (emp_id, emp_name, department, job_role, salary, joining_date, city)
+    -> VALUES
+    -> (101, 'Ravi Kumar', 'IT', 'Developer', 45000, '2023-01-15', 'Vizag'),
+    -> (102, 'Priya Sharma', 'HR', 'HR Manager', 55000, '2022-06-20', 'Hyderabad'),
+    -> (103, 'Kiran Reddy', 'IT', 'Tester', 40000, '2023-03-10', 'Vizag'),
+    -> (104, 'Sneha Rao', 'Finance', 'Accountant', 48000, '2021-11-25', 'Chennai'),
+    -> (105, 'Arun Kumar', 'IT', 'Developer', 60000, '2020-08-18', 'Bangalore'),
+    -> (106, 'Divya Reddy', 'HR', 'Recruiter', 35000, '2024-01-05', 'Vizag'),
+    -> (107, 'Suresh Babu', 'Sales', 'Executive', 42000, '2022-09-12', 'Hyderabad'),
+    -> (108, 'Anjali Devi', 'IT', 'Developer', 70000, '2019-05-30', 'Chennai'),
+    -> (109, 'Mahesh Kumar', 'Sales', 'Manager', 65000, '2020-02-14', 'Bangalore'),
+    -> (110, 'Lakshmi Rao', 'Finance', 'Analyst', 52000, '2023-07-22', 'Hyderabad');
+Query OK, 10 rows affected (0.06 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from employees;
++--------+--------------+------------+------------+----------+--------------+-----------+
+| emp_id | emp_name     | department | job_role   | salary   | joining_date | city      |
++--------+--------------+------------+------------+----------+--------------+-----------+
+|    101 | Ravi Kumar   | IT         | Developer  | 45000.00 | 2023-01-15   | Vizag     |
+|    102 | Priya Sharma | HR         | HR Manager | 55000.00 | 2022-06-20   | Hyderabad |
+|    103 | Kiran Reddy  | IT         | Tester     | 40000.00 | 2023-03-10   | Vizag     |
+|    104 | Sneha Rao    | Finance    | Accountant | 48000.00 | 2021-11-25   | Chennai   |
+|    105 | Arun Kumar   | IT         | Developer  | 60000.00 | 2020-08-18   | Bangalore |
+|    106 | Divya Reddy  | HR         | Recruiter  | 35000.00 | 2024-01-05   | Vizag     |
+|    107 | Suresh Babu  | Sales      | Executive  | 42000.00 | 2022-09-12   | Hyderabad |
+|    108 | Anjali Devi  | IT         | Developer  | 70000.00 | 2019-05-30   | Chennai   |
+|    109 | Mahesh Kumar | Sales      | Manager    | 65000.00 | 2020-02-14   | Bangalore |
+|    110 | Lakshmi Rao  | Finance    | Analyst    | 52000.00 | 2023-07-22   | Hyderabad |
++--------+--------------+------------+------------+----------+--------------+-----------+
+10 rows in set (0.00 sec)
+
+mysql> alter table employees add EMAIL varchar(100);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employees;
++--------------+---------------+------+-----+---------+-------+
+| Field        | Type          | Null | Key | Default | Extra |
++--------------+---------------+------+-----+---------+-------+
+| emp_id       | int           | NO   | PRI | NULL    |       |
+| emp_name     | varchar(100)  | YES  |     | NULL    |       |
+| department   | varchar(50)   | YES  |     | NULL    |       |
+| job_role     | varchar(50)   | YES  |     | NULL    |       |
+| salary       | decimal(10,2) | YES  |     | NULL    |       |
+| joining_date | date          | YES  |     | NULL    |       |
+| city         | varchar(50)   | YES  |     | NULL    |       |
+| EMAIL        | varchar(100)  | YES  |     | NULL    |       |
++--------------+---------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> alter table employees add phone varchar(15);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employees;
++--------------+---------------+------+-----+---------+-------+
+| Field        | Type          | Null | Key | Default | Extra |
++--------------+---------------+------+-----+---------+-------+
+| emp_id       | int           | NO   | PRI | NULL    |       |
+| emp_name     | varchar(100)  | YES  |     | NULL    |       |
+| department   | varchar(50)   | YES  |     | NULL    |       |
+| job_role     | varchar(50)   | YES  |     | NULL    |       |
+| salary       | decimal(10,2) | YES  |     | NULL    |       |
+| joining_date | date          | YES  |     | NULL    |       |
+| city         | varchar(50)   | YES  |     | NULL    |       |
+| EMAIL        | varchar(100)  | YES  |     | NULL    |       |
+| phone        | varchar(15)   | YES  |     | NULL    |       |
++--------------+---------------+------+-----+---------+-------+
+9 rows in set (0.00 sec)
+
+mysql> alter table employees modify city varchar(100);
+Query OK, 10 rows affected (0.19 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> desc employees;
++--------------+---------------+------+-----+---------+-------+
+| Field        | Type          | Null | Key | Default | Extra |
++--------------+---------------+------+-----+---------+-------+
+| emp_id       | int           | NO   | PRI | NULL    |       |
+| emp_name     | varchar(100)  | YES  |     | NULL    |       |
+| department   | varchar(50)   | YES  |     | NULL    |       |
+| job_role     | varchar(50)   | YES  |     | NULL    |       |
+| salary       | decimal(10,2) | YES  |     | NULL    |       |
+| joining_date | date          | YES  |     | NULL    |       |
+| city         | varchar(100)  | YES  |     | NULL    |       |
+| EMAIL        | varchar(100)  | YES  |     | NULL    |       |
+| phone        | varchar(15)   | YES  |     | NULL    |       |
++--------------+---------------+------+-----+---------+-------+
+9 rows in set (0.00 sec)
+
+mysql> alter table employees rename job_role to designation;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'to designation' at line 1
+mysql> alter table employees rename column job_role to designation;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employees rename column EMAIL to email;
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employees;
++--------------+---------------+------+-----+---------+-------+
+| Field        | Type          | Null | Key | Default | Extra |
++--------------+---------------+------+-----+---------+-------+
+| emp_id       | int           | NO   | PRI | NULL    |       |
+| emp_name     | varchar(100)  | YES  |     | NULL    |       |
+| department   | varchar(50)   | YES  |     | NULL    |       |
+| designation  | varchar(50)   | YES  |     | NULL    |       |
+| salary       | decimal(10,2) | YES  |     | NULL    |       |
+| joining_date | date          | YES  |     | NULL    |       |
+| city         | varchar(100)  | YES  |     | NULL    |       |
+| email        | varchar(100)  | YES  |     | NULL    |       |
+| phone        | varchar(15)   | YES  |     | NULL    |       |
++--------------+---------------+------+-----+---------+-------+
+9 rows in set (0.00 sec)
+
+mysql> alter table employees drop phone;
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employees;
++--------------+---------------+------+-----+---------+-------+
+| Field        | Type          | Null | Key | Default | Extra |
++--------------+---------------+------+-----+---------+-------+
+| emp_id       | int           | NO   | PRI | NULL    |       |
+| emp_name     | varchar(100)  | YES  |     | NULL    |       |
+| department   | varchar(50)   | YES  |     | NULL    |       |
+| designation  | varchar(50)   | YES  |     | NULL    |       |
+| salary       | decimal(10,2) | YES  |     | NULL    |       |
+| joining_date | date          | YES  |     | NULL    |       |
+| city         | varchar(100)  | YES  |     | NULL    |       |
+| email        | varchar(100)  | YES  |     | NULL    |       |
++--------------+---------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> update employees set salary=50000.00 where emp_name = 'Ravi Kumar';
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employees;
++--------+--------------+------------+-------------+----------+--------------+-----------+-------+
+| emp_id | emp_name     | department | designation | salary   | joining_date | city      | email |
++--------+--------------+------------+-------------+----------+--------------+-----------+-------+
+|    101 | Ravi Kumar   | IT         | Developer   | 50000.00 | 2023-01-15   | Vizag     | NULL  |
+|    102 | Priya Sharma | HR         | HR Manager  | 55000.00 | 2022-06-20   | Hyderabad | NULL  |
+|    103 | Kiran Reddy  | IT         | Tester      | 40000.00 | 2023-03-10   | Vizag     | NULL  |
+|    104 | Sneha Rao    | Finance    | Accountant  | 48000.00 | 2021-11-25   | Chennai   | NULL  |
+|    105 | Arun Kumar   | IT         | Developer   | 60000.00 | 2020-08-18   | Bangalore | NULL  |
+|    106 | Divya Reddy  | HR         | Recruiter   | 35000.00 | 2024-01-05   | Vizag     | NULL  |
+|    107 | Suresh Babu  | Sales      | Executive   | 42000.00 | 2022-09-12   | Hyderabad | NULL  |
+|    108 | Anjali Devi  | IT         | Developer   | 70000.00 | 2019-05-30   | Chennai   | NULL  |
+|    109 | Mahesh Kumar | Sales      | Manager     | 65000.00 | 2020-02-14   | Bangalore | NULL  |
+|    110 | Lakshmi Rao  | Finance    | Analyst     | 52000.00 | 2023-07-22   | Hyderabad | NULL  |
++--------+--------------+------------+-------------+----------+--------------+-----------+-------+
+10 rows in set (0.00 sec)
+
+mysql> update employees set city='Hyderabad' where emp_name='Divya Reddy';
+Query OK, 1 row affected (0.07 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employees;
++--------+--------------+------------+-------------+----------+--------------+-----------+-------+
+| emp_id | emp_name     | department | designation | salary   | joining_date | city      | email |
++--------+--------------+------------+-------------+----------+--------------+-----------+-------+
+|    101 | Ravi Kumar   | IT         | Developer   | 50000.00 | 2023-01-15   | Vizag     | NULL  |
+|    102 | Priya Sharma | HR         | HR Manager  | 55000.00 | 2022-06-20   | Hyderabad | NULL  |
+|    103 | Kiran Reddy  | IT         | Tester      | 40000.00 | 2023-03-10   | Vizag     | NULL  |
+|    104 | Sneha Rao    | Finance    | Accountant  | 48000.00 | 2021-11-25   | Chennai   | NULL  |
+|    105 | Arun Kumar   | IT         | Developer   | 60000.00 | 2020-08-18   | Bangalore | NULL  |
+|    106 | Divya Reddy  | HR         | Recruiter   | 35000.00 | 2024-01-05   | Hyderabad | NULL  |
+|    107 | Suresh Babu  | Sales      | Executive   | 42000.00 | 2022-09-12   | Hyderabad | NULL  |
+|    108 | Anjali Devi  | IT         | Developer   | 70000.00 | 2019-05-30   | Chennai   | NULL  |
+|    109 | Mahesh Kumar | Sales      | Manager     | 65000.00 | 2020-02-14   | Bangalore | NULL  |
+|    110 | Lakshmi Rao  | Finance    | Analyst     | 52000.00 | 2023-07-22   | Hyderabad | NULL  |
++--------+--------------+------------+-------------+----------+--------------+-----------+-------+
+10 rows in set (0.00 sec)
+
+mysql> update employees set designation='Sales Manage' where emp_id = 109;
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employees;
++--------+--------------+------------+--------------+----------+--------------+-----------+-------+
+| emp_id | emp_name     | department | designation  | salary   | joining_date | city      | email |
++--------+--------------+------------+--------------+----------+--------------+-----------+-------+
+|    101 | Ravi Kumar   | IT         | Developer    | 50000.00 | 2023-01-15   | Vizag     | NULL  |
+|    102 | Priya Sharma | HR         | HR Manager   | 55000.00 | 2022-06-20   | Hyderabad | NULL  |
+|    103 | Kiran Reddy  | IT         | Tester       | 40000.00 | 2023-03-10   | Vizag     | NULL  |
+|    104 | Sneha Rao    | Finance    | Accountant   | 48000.00 | 2021-11-25   | Chennai   | NULL  |
+|    105 | Arun Kumar   | IT         | Developer    | 60000.00 | 2020-08-18   | Bangalore | NULL  |
+|    106 | Divya Reddy  | HR         | Recruiter    | 35000.00 | 2024-01-05   | Hyderabad | NULL  |
+|    107 | Suresh Babu  | Sales      | Executive    | 42000.00 | 2022-09-12   | Hyderabad | NULL  |
+|    108 | Anjali Devi  | IT         | Developer    | 70000.00 | 2019-05-30   | Chennai   | NULL  |
+|    109 | Mahesh Kumar | Sales      | Sales Manage | 65000.00 | 2020-02-14   | Bangalore | NULL  |
+|    110 | Lakshmi Rao  | Finance    | Analyst      | 52000.00 | 2023-07-22   | Hyderabad | NULL  |
++--------+--------------+------------+--------------+----------+--------------+-----------+-------+
+10 rows in set (0.00 sec)
+
+mysql> update employees set salary=salary+(salary*0.10) where department='IT';
+Query OK, 4 rows affected (0.07 sec)
+Rows matched: 4  Changed: 4  Warnings: 0
+
+mysql> select * from employees;
++--------+--------------+------------+--------------+----------+--------------+-----------+-------+
+| emp_id | emp_name     | department | designation  | salary   | joining_date | city      | email |
++--------+--------------+------------+--------------+----------+--------------+-----------+-------+
+|    101 | Ravi Kumar   | IT         | Developer    | 55000.00 | 2023-01-15   | Vizag     | NULL  |
+|    102 | Priya Sharma | HR         | HR Manager   | 55000.00 | 2022-06-20   | Hyderabad | NULL  |
+|    103 | Kiran Reddy  | IT         | Tester       | 44000.00 | 2023-03-10   | Vizag     | NULL  |
+|    104 | Sneha Rao    | Finance    | Accountant   | 48000.00 | 2021-11-25   | Chennai   | NULL  |
+|    105 | Arun Kumar   | IT         | Developer    | 66000.00 | 2020-08-18   | Bangalore | NULL  |
+|    106 | Divya Reddy  | HR         | Recruiter    | 35000.00 | 2024-01-05   | Hyderabad | NULL  |
+|    107 | Suresh Babu  | Sales      | Executive    | 42000.00 | 2022-09-12   | Hyderabad | NULL  |
+|    108 | Anjali Devi  | IT         | Developer    | 77000.00 | 2019-05-30   | Chennai   | NULL  |
+|    109 | Mahesh Kumar | Sales      | Sales Manage | 65000.00 | 2020-02-14   | Bangalore | NULL  |
+|    110 | Lakshmi Rao  | Finance    | Analyst      | 52000.00 | 2023-07-22   | Hyderabad | NULL  |
++--------+--------------+------------+--------------+----------+--------------+-----------+-------+
+10 rows in set (0.00 sec)
+
+mysql> update employees set salary=salary+5000.00 where salary < 45000.00;
+Query OK, 3 rows affected (0.05 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+mysql> select * from employees;
++--------+--------------+------------+--------------+----------+--------------+-----------+-------+
+| emp_id | emp_name     | department | designation  | salary   | joining_date | city      | email |
++--------+--------------+------------+--------------+----------+--------------+-----------+-------+
+|    101 | Ravi Kumar   | IT         | Developer    | 55000.00 | 2023-01-15   | Vizag     | NULL  |
+|    102 | Priya Sharma | HR         | HR Manager   | 55000.00 | 2022-06-20   | Hyderabad | NULL  |
+|    103 | Kiran Reddy  | IT         | Tester       | 49000.00 | 2023-03-10   | Vizag     | NULL  |
+|    104 | Sneha Rao    | Finance    | Accountant   | 48000.00 | 2021-11-25   | Chennai   | NULL  |
+|    105 | Arun Kumar   | IT         | Developer    | 66000.00 | 2020-08-18   | Bangalore | NULL  |
+|    106 | Divya Reddy  | HR         | Recruiter    | 40000.00 | 2024-01-05   | Hyderabad | NULL  |
+|    107 | Suresh Babu  | Sales      | Executive    | 47000.00 | 2022-09-12   | Hyderabad | NULL  |
+|    108 | Anjali Devi  | IT         | Developer    | 77000.00 | 2019-05-30   | Chennai   | NULL  |
+|    109 | Mahesh Kumar | Sales      | Sales Manage | 65000.00 | 2020-02-14   | Bangalore | NULL  |
+|    110 | Lakshmi Rao  | Finance    | Analyst      | 52000.00 | 2023-07-22   | Hyderabad | NULL  |
++--------+--------------+------------+--------------+----------+--------------+-----------+-------+
+10 rows in set (0.00 sec)
+
+mysql> notee

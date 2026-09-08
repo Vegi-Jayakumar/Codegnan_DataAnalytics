@@ -1,0 +1,408 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| cg_mysql           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.04 sec)
+
+mysql> use cg_mysql;
+Database changed
+mysql> /* MySQL DCL Commands */
+mysql> /* DCL commands are used to control access to data in the database - mainly to grant and revoke privileges to users. */
+mysql> /* GRANT = gives specific privileges to a user or role
+   /*>    REVOKE = takes back the privileges from a user or role
+   /*> 
+   /*> Common privilages you can grant:
+   /*> -> select = read data
+   /*> -> insert = insert data
+   /*> -> update = modify data
+   /*> -> delete = delete data
+   /*> -> all privileges = all the privileges
+   /*> 
+   /*> User Creation: create user "username" identified by "password"
+   /*> 
+   /*> grant privilage: grant privilage on table_name to "username"
+   /*> revoke privilage: revoke privilage on table_name to "username" */
+mysql> show tables;
++--------------------+
+| Tables_in_cg_mysql |
++--------------------+
+| company_staff      |
+| departments        |
+| doctors            |
+| employees          |
+| staff              |
++--------------------+
+5 rows in set (0.07 sec)
+
+mysql> create table students(
+    -> student_id int primary key,
+    -> student_name varchar(30),
+    -> student_email varchar(20) unique
+    -> );
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> insert into values(101,'Praveen','praveen@cg.com');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'values(101,'Praveen','praveen@cg.com')' at line 1
+mysql> insert into students values(101,'Praveen','praveen@cg.com');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select * from students;
++------------+--------------+----------------+
+| student_id | student_name | student_email  |
++------------+--------------+----------------+
+|        101 | Praveen      | praveen@cg.com |
++------------+--------------+----------------+
+1 row in set (0.04 sec)
+
+mysql> insert into students values(102,'jayakumar','jayakumar@cg.com'),(103,'sanjay','sanjay@cg.com');
+Query OK, 2 rows affected (0.06 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from students;
++------------+--------------+------------------+
+| student_id | student_name | student_email    |
++------------+--------------+------------------+
+|        101 | Praveen      | praveen@cg.com   |
+|        102 | jayakumar    | jayakumar@cg.com |
+|        103 | sanjay       | sanjay@cg.com    |
++------------+--------------+------------------+
+3 rows in set (0.00 sec)
+
+mysql> create user jk identified by 'jk123';
+ERROR 1396 (HY000): Operation CREATE USER failed for 'jk'@'%'
+mysql> create user vjak identified by 'jk123';
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> create user vuss identified by 'us123';
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> grant select, insert, update on students to vjak;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> grant select, drop on students to vuss;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> select * from students;
++------------+--------------+------------------+
+| student_id | student_name | student_email    |
++------------+--------------+------------------+
+|        101 | Praveen      | praveen@cg.com   |
+|        102 | jayakumar    | jayakumar@cg.com |
+|        103 | sanjay       | sanjay@cg.com    |
+|        104 | usha         | usha@cg.com      |
++------------+--------------+------------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from students;
++------------+--------------+------------------+
+| student_id | student_name | student_email    |
++------------+--------------+------------------+
+|        101 | Praveen      | praveen@cg.com   |
+|        102 | jayakumar    | jayakumar@cg.com |
+|        103 | sanjay       | sanjay@cg.com    |
+|        104 | ushasri      | usha@cg.com      |
++------------+--------------+------------------+
+4 rows in set (0.00 sec)
+
+mysql> revoke insert, update on students from vjak;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> revoke drop on students from vuss;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> create table emp(
+    -> emp_id int auto_increment primary key,
+    -> ename varchar(30),
+    -> esalary decimal(10,2)
+    -> );
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> insert into emp values('jayakumar',50000.00),('praveen',40000.00);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into emp(ename,esalary) values('jayakumar',50000.00),('praveen',40000.00);
+Query OK, 2 rows affected (0.06 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from emp;
++--------+-----------+----------+
+| emp_id | ename     | esalary  |
++--------+-----------+----------+
+|      1 | jayakumar | 50000.00 |
+|      2 | praveen   | 40000.00 |
++--------+-----------+----------+
+2 rows in set (0.00 sec)
+
+mysql> delete emp where emp_id = 2;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where emp_id = 2' at line 1
+mysql> delete table emp where emp_id = 2;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table emp where emp_id = 2' at line 1
+mysql> delete from emp where emp_id = 2;
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from emp;
++--------+-----------+----------+
+| emp_id | ename     | esalary  |
++--------+-----------+----------+
+|      1 | jayakumar | 50000.00 |
++--------+-----------+----------+
+1 row in set (0.00 sec)
+
+mysql> insert into emp(ename,esalary) values('sajay',30000.00);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from emp;
++--------+-----------+----------+
+| emp_id | ename     | esalary  |
++--------+-----------+----------+
+|      1 | jayakumar | 50000.00 |
+|      3 | sajay     | 30000.00 |
++--------+-----------+----------+
+2 rows in set (0.00 sec)
+
+mysql> create table backup_emp as
+    -> select * from emp;
+Query OK, 2 rows affected (0.10 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from backup_emp;
++--------+-----------+----------+
+| emp_id | ename     | esalary  |
++--------+-----------+----------+
+|      1 | jayakumar | 50000.00 |
+|      3 | sajay     | 30000.00 |
++--------+-----------+----------+
+2 rows in set (0.00 sec)
+
+mysql> -- Computed columns
+mysql> alter table emp add exp int;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table emp add t_earning decimal generated always as (esalary * exp);
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from emp;
++--------+-----------+----------+------+-----------+
+| emp_id | ename     | esalary  | exp  | t_earning |
++--------+-----------+----------+------+-----------+
+|      1 | jayakumar | 50000.00 | NULL |      NULL |
+|      3 | sajay     | 30000.00 | NULL |      NULL |
++--------+-----------+----------+------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> insert into emp(exp) values(24),(60) where empid = 1,3;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where empid = 1,3' at line 1
+mysql> insert into emp(exp) values(24) where emp_id = 1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where emp_id = 1' at line 1
+mysql> insert into emp(exp) values(24),(60);
+Query OK, 2 rows affected (0.04 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from emp;
++--------+-----------+----------+------+-----------+
+| emp_id | ename     | esalary  | exp  | t_earning |
++--------+-----------+----------+------+-----------+
+|      1 | jayakumar | 50000.00 | NULL |      NULL |
+|      3 | sajay     | 30000.00 | NULL |      NULL |
+|      4 | NULL      |     NULL |   24 |      NULL |
+|      5 | NULL      |     NULL |   60 |      NULL |
++--------+-----------+----------+------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> delete from emp where emp_id = 4;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> delete from emp where emp_id = 5;
+Query OK, 1 row affected (0.05 sec)
+
+mysql> update emp set exp = 24 where emp_id = 1;
+Query OK, 1 row affected (0.06 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update emp set exp = 60 where emp_id = 3;
+Query OK, 1 row affected (0.07 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from emp;
++--------+-----------+----------+------+-----------+
+| emp_id | ename     | esalary  | exp  | t_earning |
++--------+-----------+----------+------+-----------+
+|      1 | jayakumar | 50000.00 |   24 |   1200000 |
+|      3 | sajay     | 30000.00 |   60 |   1800000 |
++--------+-----------+----------+------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> alter table emp drop column t_earning;
+Query OK, 0 rows affected (0.12 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from emp;
++--------+-----------+----------+------+
+| emp_id | ename     | esalary  | exp  |
++--------+-----------+----------+------+
+|      1 | jayakumar | 50000.00 |   24 |
+|      3 | sajay     | 30000.00 |   60 |
++--------+-----------+----------+------+
+2 rows in set (0.00 sec)
+
+mysql> alter table emp add t_earning decimal(10,2) generated always as (esalary * exp);
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from emp;
++--------+-----------+----------+------+------------+
+| emp_id | ename     | esalary  | exp  | t_earning  |
++--------+-----------+----------+------+------------+
+|      1 | jayakumar | 50000.00 |   24 | 1200000.00 |
+|      3 | sajay     | 30000.00 |   60 | 1800000.00 |
++--------+-----------+----------+------+------------+
+2 rows in set (0.00 sec)
+
+mysql> notee
+
+
+===================
+user = vjak
+===================
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql -u vjak -p
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 8.0.36 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| cg_mysql           |
+| information_schema |
+| performance_schema |
++--------------------+
+3 rows in set (0.00 sec)
+
+mysql> use cg_mysql;
+Database changed
+mysql> show tables;
++--------------------+
+| Tables_in_cg_mysql |
++--------------------+
+| students           |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> select * from students;
++------------+--------------+------------------+
+| student_id | student_name | student_email    |
++------------+--------------+------------------+
+|        101 | Praveen      | praveen@cg.com   |
+|        102 | jayakumar    | jayakumar@cg.com |
+|        103 | sanjay       | sanjay@cg.com    |
++------------+--------------+------------------+
+3 rows in set (0.00 sec)
+
+mysql> insert into students values(104,'usha','usha@cg.com');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> delete from students where student_name = sanjay;
+ERROR 1142 (42000): DELETE command denied to user 'vjak'@'localhost' for table 'students'
+mysql> update table students set student_name = 'ushasri' where student_name = 'usha';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table students set student_name = 'ushasri' where student_name = 'usha'' at line 1
+mysql> update students set student_name = 'ushasri' where student_name = 'usha';
+Query OK, 1 row affected (0.04 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from students;
++------------+--------------+------------------+
+| student_id | student_name | student_email    |
++------------+--------------+------------------+
+|        101 | Praveen      | praveen@cg.com   |
+|        102 | jayakumar    | jayakumar@cg.com |
+|        103 | sanjay       | sanjay@cg.com    |
+|        104 | ushasri      | usha@cg.com      |
++------------+--------------+------------------+
+4 rows in set (0.00 sec)
+
+mysql> insert into students values(105,'pavankalyan','pavan@cg.com')
+    -> ;
+ERROR 1142 (42000): INSERT command denied to user 'vjak'@'localhost' for table 'students'
+mysql>
+
+
+=================
+user = vuss
+=================
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql -u vuss -p
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 10
+Server version: 8.0.36 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| cg_mysql           |
+| information_schema |
+| performance_schema |
++--------------------+
+3 rows in set (0.00 sec)
+
+mysql> use cg_mysql;
+Database changed
+mysql> show tables;
++--------------------+
+| Tables_in_cg_mysql |
++--------------------+
+| students           |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> select * from students;
++------------+--------------+------------------+
+| student_id | student_name | student_email    |
++------------+--------------+------------------+
+|        101 | Praveen      | praveen@cg.com   |
+|        102 | jayakumar    | jayakumar@cg.com |
+|        103 | sanjay       | sanjay@cg.com    |
++------------+--------------+------------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from students;
++------------+--------------+------------------+
+| student_id | student_name | student_email    |
++------------+--------------+------------------+
+|        101 | Praveen      | praveen@cg.com   |
+|        102 | jayakumar    | jayakumar@cg.com |
+|        103 | sanjay       | sanjay@cg.com    |
+|        104 | ushasri      | usha@cg.com      |
++------------+--------------+------------------+
+4 rows in set (0.00 sec)
+
+mysql> alter table students drop column student_email;
+ERROR 1142 (42000): ALTER command denied to user 'vuss'@'localhost' for table 'students'
+mysql> drop table students;
+ERROR 1142 (42000): DROP command denied to user 'vuss'@'localhost' for table 'students'
+mysql>

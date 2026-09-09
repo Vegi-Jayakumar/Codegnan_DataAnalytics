@@ -275,5 +275,18 @@ write only the approach without the code
 #         sum += 1
 # print(sum)
 
-discounted_price = 5000-(5000 * 10/100)
-print(discounted_price + (discounted_price * 18/100))
+#Variable discount and standard gst
+prices = [15000,2000,13000,25000,35000]
+discounted_prices = []
+
+for price in prices:
+    if price < 5000:
+        new_price = price
+    elif price <= 15000:
+        new_price = price - (price *10/100)
+    else:
+        new_price = price - (price * 15/100)
+    discounted_prices.append(new_price + (new_price*18/100))
+
+print(discounted_prices)
+

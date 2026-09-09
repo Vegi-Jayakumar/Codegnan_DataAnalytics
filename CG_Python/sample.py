@@ -274,3 +274,6 @@ write only the approach without the code
 #     if sentence[i] == " ":
 #         sum += 1
 # print(sum)
+
+discounted_price = 5000-(5000 * 10/100)
+print(discounted_price + (discounted_price * 18/100))

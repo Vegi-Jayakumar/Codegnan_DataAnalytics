@@ -290,3 +290,11 @@ write only the approach without the code
 
 # print(discounted_prices)
 
+#Taxi fare Calculation
+
+# distance_travelled = int(input("Enter the distance travelled: "))
+# condition_1 = 50+(15*(distance_travelled-2))
+# condition_2 = 50+(15*8) + (10*(distance_travelled-10))
+# condition_3 = condition_2 + (condition_2*0.05)
+# price = 50 if distance_travelled<=2 else condition_1 if distance_travelled<=10 else condition_2 if distance_travelled<=20 else condition_3
+# print(price)

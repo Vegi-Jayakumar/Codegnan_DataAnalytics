@@ -46,11 +46,10 @@ batch[::3]          #Output: ['name','Java','c']
 batch[1:5:2]        #Output: ['python','Java']
 
 #Tryout in notes with explanation
-print(batch[:7:4])
-print(batch[7::4])
-print(batch[1::5])
-print(batch[1:7:-2])
-print(batch[-1:-4:-1])
+print(batch[:7:4])       #Output: ['name',['C++','C','Data Science']]
+print(batch[7::4])       #Output: ['Data Science']
+print(batch[1::5])       #Output: ['python','C']
+print(batch[1:7:-2])     #Output: []
+print(batch[-1:-4:-1])   #Output: ['Data Science', 'C', 'C++']
 
 '''
-

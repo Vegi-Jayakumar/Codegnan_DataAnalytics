@@ -1,3 +1,0 @@
-mysql> use cg_mysql;
-Database changed
-mysql> notee

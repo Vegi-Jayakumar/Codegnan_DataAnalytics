@@ -1,0 +1,215 @@
+mysql> use cg_mysql;
+Database changed
+mysql> show tables;
++--------------------+
+| Tables_in_cg_mysql |
++--------------------+
+| backup_emp         |
+| company_staff      |
+| departments        |
+| doctors            |
+| emp                |
+| employees          |
+| orders             |
+| products           |
+| projects           |
+| sales              |
+| staff              |
+| students           |
+| studentscores      |
++--------------------+
+13 rows in set (0.01 sec)
+
+mysql> select * from sales;
++---------+------------+---------------+------------+------------+--------+
+| sale_id | product    | category      | units_sold | unit_price | region |
++---------+------------+---------------+------------+------------+--------+
+|       1 | Keyboard   | Electronics   |         10 |       1200 | North  |
+|       2 | Monitor    | Electronics   |          5 |       7000 | South  |
+|       3 | Chair      | Furniture     |         15 |       2500 | North  |
+|       4 | Desk       | Furniture     |          7 |       4500 | West   |
+|       5 | Mouse      | Electronics   |         20 |        800 | East   |
+|       6 | Sofa       | Furniture     |          3 |      15000 | South  |
+|       7 | Headphones | Electronics   |          8 |       1800 | North  |
+|       8 | Laptop     | Electronics   |          6 |      55000 | West   |
+|       9 | Table      | Furniture     |         12 |       6000 | East   |
+|      10 | Fan        | HomeAppliance |         18 |       3000 | South  |
+|      11 | AC         | HomeAppliance |          4 |      35000 | North  |
+|      12 | Cupboard   | Furniture     |          5 |      12000 | West   |
+|      13 | Printer    | Electronics   |          9 |       9000 | East   |
+|      14 | Bed        | Furniture     |          2 |      25000 | South  |
+|      15 | Mobile     | Electronics   |         14 |      20000 | North  |
++---------+------------+---------------+------------+------------+--------+
+15 rows in set (0.00 sec)
+
+mysql> select category, sum(units_sold) as total_units from sales group by category having total_units > 20;
++---------------+-------------+
+| category      | total_units |
++---------------+-------------+
+| Electronics   |          72 |
+| Furniture     |          44 |
+| HomeAppliance |          22 |
++---------------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> select region, sum(units_sold*unit_price) as total_revenue from sales group by region having total_revenue > 50000;
++--------+---------------+
+| region | total_revenue |
++--------+---------------+
+| North  |        483900 |
+| South  |        184000 |
+| West   |        421500 |
+| East   |        169000 |
++--------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> select category, count(products) as total_units from sales group by category having total_units > 2;
+ERROR 1054 (42S22): Unknown column 'products' in 'field list'
+mysql> select category, count(product) as total_units from sales group by category having total_units > 2;
++-------------+-------------+
+| category    | total_units |
++-------------+-------------+
+| Electronics |           7 |
+| Furniture   |           6 |
++-------------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> select category, avg(unit_price) as average_price from sales group by category having average_price < 5000;
+Empty set (0.00 sec)
+
+mysql> select region, count(product) as total_units from sales group by region having categoty = electronics and total_units > 1;
+ERROR 1054 (42S22): Unknown column 'categoty' in 'having clause'
+mysql> select region, count(category) as total_units from sales where category = 'electronics' group by region having total_units > 1;
++--------+-------------+
+| region | total_units |
++--------+-------------+
+| North  |           3 |
+| East   |           2 |
++--------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> select category, sum(units_sold) as total_units_sold from sales group by category order by category desc;
++---------------+------------------+
+| category      | total_units_sold |
++---------------+------------------+
+| HomeAppliance |               22 |
+| Furniture     |               44 |
+| Electronics   |               72 |
++---------------+------------------+
+3 rows in set (0.00 sec)
+
+mysql> select category, sum(units_sold) as total_units_sold from sales group by category order by total_units_sold desc;
++---------------+------------------+
+| category      | total_units_sold |
++---------------+------------------+
+| Electronics   |               72 |
+| Furniture     |               44 |
+| HomeAppliance |               22 |
++---------------+------------------+
+3 rows in set (0.00 sec)
+
+mysql> select region, avg(unit_price) as average_unit_price from sales group by region order by region;
++--------+--------------------+
+| region | average_unit_price |
++--------+--------------------+
+| East   |          5266.6667 |
+| North  |         12100.0000 |
+| South  |         12500.0000 |
+| West   |         23833.3333 |
++--------+--------------------+
+4 rows in set (0.00 sec)
+
+mysql> select category, sum(units_sold*unit_price) as total_revenue from sales group by category order by total_revenue;
++---------------+---------------+
+| category      | total_revenue |
++---------------+---------------+
+| HomeAppliance |        194000 |
+| Furniture     |        296000 |
+| Electronics   |        768400 |
++---------------+---------------+
+3 rows in set (0.00 sec)
+
+mysql> select category, sum(units_sold*unit_price) as total_revenue from sales group by category order by total_revenue desc;
++---------------+---------------+
+| category      | total_revenue |
++---------------+---------------+
+| Electronics   |        768400 |
+| Furniture     |        296000 |
+| HomeAppliance |        194000 |
++---------------+---------------+
+3 rows in set (0.00 sec)
+
+mysql> select region, count(product) as total_products from sales group by region order by total_products desc;
++--------+----------------+
+| region | total_products |
++--------+----------------+
+| North  |              5 |
+| South  |              4 |
+| West   |              3 |
+| East   |              3 |
++--------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> select region, sum(units_sold) as units_sold from sales group by region order by region;
++--------+------------+
+| region | units_sold |
++--------+------------+
+| East   |         41 |
+| North  |         51 |
+| South  |         28 |
+| West   |         18 |
++--------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select region, sum(units_sold*unit_price) as total_revenue from sales group by region having region>20000 order by total_revenue desc;
+Empty set, 4 warnings (0.05 sec)
+
+mysql> select category, sum(units_sold) as units_sold from sales group by category having units_sold>10 order by category;
++---------------+------------+
+| category      | units_sold |
++---------------+------------+
+| Electronics   |         72 |
+| Furniture     |         44 |
+| HomeAppliance |         22 |
++---------------+------------+
+3 rows in set (0.00 sec)
+
+mysql> select region, count(product) as total_products from sales group by region having region>1 order by total_products;
+Empty set, 4 warnings (0.00 sec)
+
+mysql> select region, count(product) as total_products from sales group by region having total_products>1 order by total_products;
++--------+----------------+
+| region | total_products |
++--------+----------------+
+| West   |              3 |
+| East   |              3 |
+| South  |              4 |
+| North  |              5 |
++--------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> select region, sum(units_sold*unit_price) as total_revenue from sales group by region having total_revenue>20000 order by total_revenue desc;
++--------+---------------+
+| region | total_revenue |
++--------+---------------+
+| North  |        483900 |
+| West   |        421500 |
+| South  |        184000 |
+| East   |        169000 |
++--------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> select category, avg(unit_price) as average_price from sales group by category having average_price<6000 order by average_price;
+Empty set (0.00 sec)
+
+mysql> select category, avg(units_sold) as average_units from sales group by category having average_units>5 order by average_units desc;
++---------------+---------------+
+| category      | average_units |
++---------------+---------------+
+| HomeAppliance |       11.0000 |
+| Electronics   |       10.2857 |
+| Furniture     |        7.3333 |
++---------------+---------------+
+3 rows in set (0.00 sec)
+
+mysql> notee

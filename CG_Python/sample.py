@@ -298,3 +298,35 @@ write only the approach without the code
 # condition_3 = condition_2 + (condition_2*0.05)
 # price = 50 if distance_travelled<=2 else condition_1 if distance_travelled<=10 else condition_2 if distance_travelled<=20 else condition_3
 # print(price)
+
+#'python is easy' = 'easy is python' and 'i love python' = 'i evol nohtyp' and reverse star triangle
+
+#python is easy
+# string = 'python is easy'
+# elements = string.split(' ')
+# reverse_string = ''
+
+# for element in elements:
+#     reverse_string = element + ' ' + reverse_string
+
+# print(reverse_string)
+
+#i love python
+# string = 'i love python'
+# elements = string.split(" ")
+# rev_string = ''
+
+# for element in elements:
+#     rev_word = ''
+#     for char in element:
+#         rev_word = char + rev_word
+#     rev_string = rev_string + rev_word + ' '
+
+# print(rev_string)
+
+#reverse triangle
+
+# length = 5
+# for i in range(length,0,-1):
+#     print(" " * (length - i), end="")
+#     print("*" * i)

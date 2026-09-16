@@ -111,4 +111,85 @@ print(P_lang)       #Output: {'Frontend': ['html', 'css', 'js'], 'Backend': ['py
 create a dictionary using codegnan portal as example. keys:Exams,Mock Interviews, Project Demos.
 push to github --> share your link in whatsapp group.
 
+#input formatting
+a,b = 13,4.5
+
+#Output formatting
+print(a,b)  #Default sep = ' '
+print(a,b,sep=',')
+print(a,b,sep=':')
+print('codegnan','python','vizag',sep='--->')
+
+#end by default throws new line, we can modify it...
+print(a,b,end=' ')
+print("Codegnan is in vizag",end="\t")
+print("DA6 and PFS6")
+
+number_1 = int(input("Enter number 1: "))
+number_2 = int(input("Enter number 2: "))
+operator = input("Enter an operator (+,-,*,/): ")
+
+if operator == "+":
+    print(number_1 + number_2)
+elif operator == "-":
+    print(number_1 - number_2)
+elif operator == "*":
+    print(number_1 * number_2)
+elif operator == "/":
+    print(number_1 / number_2)
+else:
+    print("Invalid operator")
+
+#          or 
+
+number_1, number_2 = map(int, input("Enter values: ").split()); operator = input("Enter an operator (+,-,*,/): ")
+result = number_1+number_2 if operator == "+" else number_1-number_2 if operator == "-" else number_1*number_2 if operator == "*" else number_1/number_2 if operator == "/" else "Invalid operator"
+print("Result:",result)
+
+#usage of %d,%f,%s  --> prefer this only when you are working on calculations
+price = 45.99; grade = 'A'; stock = 15
+print("the price of %d books of %s grade is %.2f" %(stock,grade,price))
+
+radius = 3.5; area = 3.1416*(radius**2)
+print("the area of a circle with radius %.1f is %.2f" %(radius,area))
+
+#f-string --> most recommended
+name = "Codegnan"; domain = "Python"; location = "Vizag"
+print(f"The {domain} program is currently running in {name} at {location}")
+
+#Control Block Statements  --> They control the flow of the program based on certain conditions. They are of three types, they are: conditional statements, loop statements and Jumping statements.
+#Conditional statements --> if, elif, else
+#Loop statements --> for, while
+#Jumping statements --> break, continue, pass
+
+#BMI
+height_format = int(input("Enter height format: 1.ms 2.cms 3.fts \nchoice:"))
+if height_format == 1:
+    input_ = int(input("Enter height in ms: "))
+    height = input_
+elif height_format == 2:
+    input_ = int(input("Enter height in cms: "))
+    height = input_ /100
+elif height_format == 3:
+    input_ = int(input("Enter height in fts: "))
+    height = input_ / 3.281
+else:
+    print("Invalid input")
+
+weight = int(input("Enter weight in kgs: "))
+
+if height > 0 and weight > 0:
+    bmi = weight/(height**2)
+    print("BMI = %.1f"%bmi)
+    if bmi < 18.5:
+        print("UnderWeight")
+    elif bmi < 24.9:
+        print("Healthy weight")
+    elif bmi < 29.9:
+        print("Overweight")
+    else:
+        print("Obesity")
+else:
+    print("Invalid input")
+
 '''

@@ -243,3 +243,71 @@ finally:
 possible types of errors --> TypeError, ValueError, IndexError, ZeroDivisionError, NameError, AttributeError, ArithmeticError...
 
 '''
+# #Marks Classification
+
+# try:
+#     marks = int(input("Enter Marks: "))
+
+#     if 0 <= marks <= 100:
+#         if marks >= 90:
+#             print("Grade: A")
+#             print("Remark: Outstanding!")
+#         elif marks >= 80:
+#             print("Grade: B")
+#             print("Remark: Excellent!")
+#         elif marks >= 70:
+#             print("Grade: C")
+#             print("Remark: Good!")
+#         elif marks >= 60:
+#             print("Grade: D")
+#             print("Remark: Fair, needs improvement")
+#         elif marks >= 50:
+#             print("Grade: E")
+#             print("Remark: Poor, needs serious improvement")
+#         else:
+#             print("Grade: F")
+#             print("Remark: Failed, needs to reappear")
+
+#     else:
+#         print("Invalid marks entered")
+# except ValueError:
+#     print("Invalid marks entered")
+
+
+#Even odd checker with twist
+# try:
+#     number = int(input("Enter a number:"))
+
+#     if number == 0:
+#         print("Zero is neither even or odd")
+#     elif number % 2 == 0:
+#         if number > 0:
+#             print("Even number")
+#         else:
+#             print("Negative Even number")   
+#     else:
+#         if number > 0:
+#             print("Odd number")
+#         else:
+#             print("Negative Odd number")
+# except ValueError:
+#     print("Please Enter a number only")
+
+
+#Season Identifier
+# try:
+#     month_number = int(input("Enter month number: "))
+
+#     if 1 <= month_number <= 12:
+#         if month_number == 12 or month_number == 1 or month_number == 2:
+#             print("Season: Winter")
+#         elif month_number == 3 or month_number == 4 or month_number == 5:
+#             print("Season: Spring")
+#         elif month_number == 6 or month_number == 7 or month_number == 8:
+#             print("Season: Summer")
+#         else:
+#             print("Season: Autumn")
+#     else:
+#         print("Invalid month entered")
+# except ValueError:
+#     print("Invalid month entered")

@@ -163,33 +163,83 @@ print(f"The {domain} program is currently running in {name} at {location}")
 #Jumping statements --> break, continue, pass
 
 #BMI
-height_format = int(input("Enter height format: 1.ms 2.cms 3.fts \nchoice:"))
-if height_format == 1:
-    input_ = int(input("Enter height in ms: "))
-    height = input_
-elif height_format == 2:
-    input_ = int(input("Enter height in cms: "))
-    height = input_ /100
-elif height_format == 3:
-    input_ = int(input("Enter height in fts: "))
-    height = input_ / 3.281
-else:
-    print("Invalid input")
 
-weight = int(input("Enter weight in kgs: "))
+data_ = {
+    'height' : [],
+    'weight' : [],
+    'bmi' : []
+}
 
-if height > 0 and weight > 0:
-    bmi = weight/(height**2)
-    print("BMI = %.1f"%bmi)
-    if bmi < 18.5:
-        print("UnderWeight")
-    elif bmi < 24.9:
-        print("Healthy weight")
-    elif bmi < 29.9:
-        print("Overweight")
+rounds = int(input("Enter number of rounds: "))
+for i in range(rounds):
+    #Height Input
+    height_format = int(input("Enter height format: 1.ms 2.cms 3.fts \nchoice:"))
+    if height_format == 1:
+        input_ = float(input("Enter height in ms: "))
+        height = input_
+    elif height_format == 2:
+        input_ = int(input("Enter height in cms: "))
+        height = input_ /100
+    elif height_format == 3:
+        input_ = float(input("Enter height in fts: "))
+        height = input_ / 3.281
     else:
-        print("Obesity")
-else:
-    print("Invalid input")
+        print("Invalid input")
+    data_['height'].append(height)
+
+    #Weight Input
+    weight_format = int(input("Enter weight format: 1.kgs 2.lbs \nchoice: "))
+    if weight_format == 1:
+        input_ = int(input("Enter weight in kgs: "))
+        weight = input_
+    elif weight_format == 2:
+        input_ = float(input("Enter weight in lbs: "))
+        weight = input_ / 2.205
+    else:
+        print("Invalid input")
+    data_['weight'].append(weight)
+
+    #Conditions
+    if (0 <= data_['height'][i] <= 2.5) and (0 <= data_['weight'][i] <= 200):
+        data_['bmi'].append(data_['weight'][i]/(data_['height'][i]**2))
+        print("BMI = %.1f"%data_['bmi'][i])
+        if data_['bmi'][i] < 18.5:
+            print("UnderWeight")
+        elif data_['bmi'][i] < 24.9:
+            print("Healthy weight")
+        elif data_['bmi'][i] < 29.9:
+            print("Overweight")
+        else:
+            print("Obesity")
+    else:
+        print("Invalid input")
+
+#Exception Handling --> It is a mechanism to a program which responds to run time errors or compilations.
+#Exception --> It tries to make our program go in a normal flow.
+keywords --> try, except, else, finally, raise, assert
+
+try:
+    a, b = map(int, input("Enter two values: ").split())
+    result = a/b
+    print("Result = ",result)
+# except Exception as e:
+#    print(e)
+# except ValueError:
+#     print("Enter only Numbers")
+# except ZeroDivisionError:
+#     print("Cannot divide by zero")
+except (ValueError,ZeroDivisionError) as e:
+    if type(e) == ValueError:
+        print("Enter only Numbers")
+    elif type(e) == ZeroDivisionError:
+        print("Cannot divide by zero")
+    elif type(e) == NameError:
+        print("Check your program")
+finally:
+    print("Program ended")
+
+
+# In above case we will get ValueError, ZeroDivisionError...
+possible types of errors --> TypeError, ValueError, IndexError, ZeroDivisionError, NameError, AttributeError, ArithmeticError...
 
 '''

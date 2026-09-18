@@ -242,7 +242,6 @@ finally:
 # In above case we will get ValueError, ZeroDivisionError...
 possible types of errors --> TypeError, ValueError, IndexError, ZeroDivisionError, NameError, AttributeError, ArithmeticError...
 
-'''
 # #Marks Classification
 
 # try:
@@ -311,3 +310,95 @@ possible types of errors --> TypeError, ValueError, IndexError, ZeroDivisionErro
 #         print("Invalid month entered")
 # except ValueError:
 #     print("Invalid month entered")
+
+#Updated BMI Calculator
+
+data_ = {
+    'height' : [],
+    'weight' : [],
+    'bmi' : []
+}
+
+count = 0
+try:
+    while count<10:
+        #Height Input
+        height = 0
+        height_format = int(input("Enter height format: 1.ms 2.cms 3.fts \nchoice:"))
+        if height_format == 1:
+            input_ = float(input("Enter height in ms: "))
+            height = input_
+        elif height_format == 2:
+            input_ = int(input("Enter height in cms: "))
+            height = input_ /100
+        elif height_format == 3:
+            input_ = float(input("Enter height in fts: "))
+            height = input_ / 3.281
+        else:
+            print("Invalid input")
+        data_['height'].append(height)
+
+        #Weight Input
+        weight = 0
+        weight_format = int(input("Enter weight format: 1.kgs 2.lbs \nchoice: "))
+        if weight_format == 1:
+            input_ = int(input("Enter weight in kgs: "))
+            weight = input_
+        elif weight_format == 2:
+            input_ = float(input("Enter weight in lbs: "))
+            weight = input_ / 2.205
+        else:
+            print("Invalid input")
+        data_['weight'].append(weight)
+
+        #Conditions
+        if (0 <= data_['height'][count] <= 2.5) and (0 <= data_['weight'][count] <= 200):
+            data_['bmi'].append(data_['weight'][count]/(data_['height'][count]**2))
+            print("BMI = %.1f"%data_['bmi'][count])
+            if data_['bmi'][count] < 18.5:
+                print("UnderWeight")
+            elif data_['bmi'][count] < 24.9:
+                print("Healthy weight")
+            elif data_['bmi'][count] < 29.9:
+                print("Overweight")
+            else:
+                print("Obesity")
+        else:
+            print("Invalid input")
+        count += 1
+    print(data_)
+except Exception as e:
+    print(e)
+
+File Handling --> create files, make some changes over files,
+we will use open(), close() file operations.
+we will use modes like 'r', 'w', 'a', 'r+' default mode is 'r'
+we will use methods like readline(), read(), readlines(), writeline(), write(), writelines()
+we can use with keyword to make the file handling more easier. When we are using with keyword we don't have to close the file manually.
+
+# file = open('sample.txt','r')
+#print(file.read())
+#print(file.readline())
+#print(file.readlines())
+# file.close()
+
+# file = open('test.txt','w')
+# file.write("This is a sample text file created using 'w' mode from file handling.")
+# print(file)
+# file.close()
+
+# file = open('test.txt','a')
+# file.write("\nThis is an appended text file created using 'a' mode from file handling.")
+# print(file)
+# file.close()
+
+file = open('sample.txt', 'r+')
+print(file)
+print(file.read())
+file.write('appended ')
+file.close()
+
+# with open('test.txt','r') as file:
+#     print(file.read())
+
+'''

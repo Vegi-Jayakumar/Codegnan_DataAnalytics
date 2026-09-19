@@ -402,3 +402,106 @@ file.close()
 #     print(file.read())
 
 '''
+#Student Marks File Manager
+
+# file = open('marks.txt','w')
+# for i in range(5):
+#     try:
+#         marks = int(input("Enter student mark: "))
+#         if 0<=marks<=100:
+#             file.write(f"{marks}\n")
+#             print("Mark saved successfully")
+#         else:
+#             print("Invalid mark")
+#     except ValueError:
+#         print("Invalid mark")
+# file.close()
+
+# with open('marks.txt','r') as file:
+#     print("Saved Marks: ")
+#     for line in file:
+#         print(line.strip())
+
+
+#Expense Tracker
+
+# file = open('expenses.txt','w')
+# for i in range(5):
+#     try:
+#         amount = float(input(f"Enter expense {i+1}: "))
+#         if amount > 0:
+#             file.write("%.1f\n"%amount)
+#         else:
+#             print("Invalid expense. Please enter a number.")
+#     except ValueError:
+#         print("Invalid expense. Please enter a number.")
+# file.close()
+
+# try:
+#     with open('expenses.txt','r') as file:
+#         print("\nExpenses:")
+#         total = 0
+#         for line in file:
+#             print(line.strip())
+#             total += float(line.strip())
+#         print("\nTotal expense: %.1f"%total)
+# except FileNotFoundError:
+#     print("File not found.")
+
+
+#Student Attendance Manager
+
+# file = open('attendance.txt','w')
+# for i in range(5):
+#     try:
+#         name = input(f"Enter student name: ")
+#         a_status = input("Enter attendance (P/A): ")
+#         if a_status.upper() in 'PA':
+#             file.write(f"{name},{a_status}\n")
+#         else:
+#             print("Invalid attendance status.")
+#     except ValueError:
+#         print("Invalid input.")
+# file.close()
+
+# try:
+#     with open('attendance.txt','r') as file:
+#         print("\nPresent Students:")
+#         for line in file:
+#             name, status = line.strip().split(',')
+#             if status.upper() == 'P':
+#                 print(name)
+# except FileNotFoundError:
+#     print("File not found.")
+
+
+#Product Inventory manager
+#Fix the program
+
+# file = open('inventory.txt', 'a')
+# for i in range(3):
+#     try:
+#         product = input("Enter product name: ")
+#         quantity = int(input("Enter quantity: "))
+#         if quantity >= 0:
+#             file.write(f"{product},{quantity}\n")
+#         else:
+#             print("Invalid quantity")
+#     except ValueError:
+#         print("Invalid quantity")
+# file.close()
+
+# try:
+#     with open('inventory.txt', 'r') as file:
+#         print("\nCurrent Inventory:")
+#         for line in file:
+#             product, quantity = line.strip().split(',')
+#             print(f"{product} - {quantity}")
+#         check = input("Enter product to search: ")
+#         if check in file:
+#             print(f"{check} is available")
+#             print(f"Quantity: {quantity}")
+#         else:
+#             print(f"{check} is not available")
+# except FileNotFoundError:
+#     print("File not found.")

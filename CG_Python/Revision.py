@@ -476,32 +476,69 @@ file.close()
 
 
 #Product Inventory manager
-#Fix the program
 
 # file = open('inventory.txt', 'a')
 # for i in range(3):
 #     try:
-#         product = input("Enter product name: ")
-#         quantity = int(input("Enter quantity: "))
+#         product_name = input('Enter product name: ')
+#         quantity = int(input('Enter quantity: '))
 #         if quantity >= 0:
-#             file.write(f"{product},{quantity}\n")
+#             file.write(f'{product_name},{quantity}\n')
 #         else:
-#             print("Invalid quantity")
+#             print('Quantity cannot be negative')
 #     except ValueError:
-#         print("Invalid quantity")
+#         print('Invalid quantity is entered.')
 # file.close()
 
 # try:
-#     with open('inventory.txt', 'r') as file:
-#         print("\nCurrent Inventory:")
-#         for line in file:
-#             product, quantity = line.strip().split(',')
-#             print(f"{product} - {quantity}")
-#         check = input("Enter product to search: ")
-#         if check in file:
-#             print(f"{check} is available")
-#             print(f"Quantity: {quantity}")
-#         else:
-#             print(f"{check} is not available")
+#     with open('inventory.txt', 'r') as f:
+#         print('\nCurrent Inventory:')
+#         records = f.readlines()
+#         for record in records:
+#             product_name, quantity = record.strip().split(',')
+#             print(f'{product_name} - {quantity}')
+#         search_name = input('\nEnter product to search: ').strip()
+#         found = False
+#         for record in records:
+#             product_name, quantity = record.strip().split(',')
+#             if product_name.lower() == search_name.lower():
+#                 print(f'{product_name} is available.\nQuantity: {quantity}')
+#                 found = True
+#         if found == False:
+#             print('Product not found')
 # except FileNotFoundError:
-#     print("File not found.")
+#     print('Inventory file not found')
+
+
+#Student Result File Analyzer
+
+# passed=0
+# failed=0
+# total=0
+# valid_students=0
+# try:
+#     with open('students.txt','r')as f:
+#         for record in f:
+#             try:
+#                 name,mark=record.strip().split(',')
+#                 mark=int(mark)
+#                 if mark>=50:
+#                     result='Pass'
+#                     passed+=1
+#                 else:
+#                     result='Fail'
+#                     failed+=1
+#                 print(f'{name} - {mark} - {result}')
+#                 total+=mark
+#                 valid_students+=1
+#             except ValueError:
+#                 print(f'Invalid mark for {name}\n')
+#         avg=total/valid_students     
+#         print('-'*25)
+#         print('Result Summary')
+#         print('-'*25)
+#         print(f'Passed students: {passed}')
+#         print(f'Failed students: {failed}')
+#         print('Average mark: %.2f'%avg)
+# except FileNotFoundError:
+#     print('students.txt file not found')

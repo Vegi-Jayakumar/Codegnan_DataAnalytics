@@ -1,0 +1,375 @@
+mysql> use cg_mysql;
+Database changed
+
+mysql> CREATE TABLE Employees (
+    ->     emp_id INT PRIMARY KEY,
+    ->     name VARCHAR(100),
+    ->     department_id INT,
+    ->     salary DECIMAL(10,2)
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> 
+mysql> CREATE TABLE Departments (
+    ->     department_id INT PRIMARY KEY,
+    ->     department_name VARCHAR(100)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> 
+mysql> CREATE TABLE Projects (
+    ->     project_id INT PRIMARY KEY,
+    ->     project_name VARCHAR(100),
+    ->     emp_id INT
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> 
+mysql> INSERT INTO Departments (department_id, department_name) VALUES
+    -> (1, 'Human Resources'),
+    -> (2, 'Engineering'),
+    -> (3, 'Marketing'),
+    -> (4, 'Finance'),
+    -> (5, 'Operations');
+Query OK, 5 rows affected (0.02 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> 
+mysql> 
+mysql> INSERT INTO Employees (emp_id, name, department_id, salary) VALUES
+    -> (101, 'Arjun', 1, 50000),
+    -> (102, 'Bhavana', 2, 65000),
+    -> (103, 'Charan', 2, 72000),
+    -> (104, 'Divya', 3, 45000),
+    -> (105, 'Eswar', NULL, 40000),
+    -> (106, 'Farhan', 4, 55000),
+    -> (107, 'Gowri', 2, 62000),
+    -> (108, 'Harish', 5, 48000),
+    -> (109, 'Ishita', NULL, 53000),
+    -> (110, 'Jagan', 3, 60000);
+Query OK, 10 rows affected (0.01 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> 
+mysql> 
+mysql> INSERT INTO Projects (project_id, project_name, emp_id) VALUES
+    -> (201, 'Website Redesign', 102),
+    -> (202, 'Mobile Banking App', 103),
+    -> (203, 'Marketing Campaign', 104),
+    -> (204, 'Payroll System', 106),
+    -> (205, 'Backend Optimization', 107),
+    -> (206, 'Cloud Migration', 102),
+    -> (207, 'Customer Analytics', 110),
+    -> (208, 'Inventory System', NULL);
+Query OK, 8 rows affected (0.01 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> select * from employees;
++--------+---------+---------------+----------+
+| emp_id | name    | department_id | salary   |
++--------+---------+---------------+----------+
+|    101 | Arjun   |             1 | 50000.00 |
+|    102 | Bhavana |             2 | 65000.00 |
+|    103 | Charan  |             2 | 72000.00 |
+|    104 | Divya   |             3 | 45000.00 |
+|    105 | Eswar   |          NULL | 40000.00 |
+|    106 | Farhan  |             4 | 55000.00 |
+|    107 | Gowri   |             2 | 62000.00 |
+|    108 | Harish  |             5 | 48000.00 |
+|    109 | Ishita  |          NULL | 53000.00 |
+|    110 | Jagan   |             3 | 60000.00 |
++--------+---------+---------------+----------+
+10 rows in set (0.02 sec)
+
+mysql> select * from departments;
++---------------+-----------------+
+| department_id | department_name |
++---------------+-----------------+
+|             1 | Human Resources |
+|             2 | Engineering     |
+|             3 | Marketing       |
+|             4 | Finance         |
+|             5 | Operations      |
++---------------+-----------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from projects;
++------------+----------------------+--------+
+| project_id | project_name         | emp_id |
++------------+----------------------+--------+
+|        201 | Website Redesign     |    102 |
+|        202 | Mobile Banking App   |    103 |
+|        203 | Marketing Campaign   |    104 |
+|        204 | Payroll System       |    106 |
+|        205 | Backend Optimization |    107 |
+|        206 | Cloud Migration      |    102 |
+|        207 | Customer Analytics   |    110 |
+|        208 | Inventory System     |   NULL |
++------------+----------------------+--------+
+8 rows in set (0.00 sec)
+
+mysql> -- get all employees with their departments.
+mysql> select e.emp_id, e.name, d.department_name from employees e inner join departments d on e.department_id = d.department_id; 
++--------+---------+-----------------+
+| emp_id | name    | department_name |
++--------+---------+-----------------+
+|    101 | Arjun   | Human Resources |
+|    102 | Bhavana | Engineering     |
+|    103 | Charan  | Engineering     |
+|    104 | Divya   | Marketing       |
+|    106 | Farhan  | Finance         |
+|    107 | Gowri   | Engineering     |
+|    108 | Harish  | Operations      |
+|    110 | Jagan   | Marketing       |
++--------+---------+-----------------+
+8 rows in set (0.00 sec)
+
+mysql> -- get all employees who was assigned to a project
+mysql> select e.emp_id, e.name, p.project_name from employees e inner join projects p on e.emp_id = p.emp_id;
++--------+---------+----------------------+
+| emp_id | name    | project_name         |
++--------+---------+----------------------+
+|    102 | Bhavana | Website Redesign     |
+|    103 | Charan  | Mobile Banking App   |
+|    104 | Divya   | Marketing Campaign   |
+|    106 | Farhan  | Payroll System       |
+|    107 | Gowri   | Backend Optimization |
+|    102 | Bhavana | Cloud Migration      |
+|    110 | Jagan   | Customer Analytics   |
++--------+---------+----------------------+
+7 rows in set (0.00 sec)
+
+mysql> select e.emp_id, e.name from employees e inner join projects p on e.emp_id = p.emp_id;
++--------+---------+
+| emp_id | name    |
++--------+---------+
+|    102 | Bhavana |
+|    103 | Charan  |
+|    104 | Divya   |
+|    106 | Farhan  |
+|    107 | Gowri   |
+|    102 | Bhavana |
+|    110 | Jagan   |
++--------+---------+
+7 rows in set (0.00 sec)
+
+mysql> select distinct e.emp_id, e.name from employees e inner join projects p on e.emp_id = p.emp_id;
++--------+---------+
+| emp_id | name    |
++--------+---------+
+|    102 | Bhavana |
+|    103 | Charan  |
+|    104 | Divya   |
+|    106 | Farhan  |
+|    107 | Gowri   |
+|    110 | Jagan   |
++--------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select e.emp_id, e.name, d.department_name from employees e left join departments d on e.department_id = d.department_id;
++--------+---------+-----------------+
+| emp_id | name    | department_name |
++--------+---------+-----------------+
+|    101 | Arjun   | Human Resources |
+|    102 | Bhavana | Engineering     |
+|    103 | Charan  | Engineering     |
+|    104 | Divya   | Marketing       |
+|    105 | Eswar   | NULL            |
+|    106 | Farhan  | Finance         |
+|    107 | Gowri   | Engineering     |
+|    108 | Harish  | Operations      |
+|    109 | Ishita  | NULL            |
+|    110 | Jagan   | Marketing       |
++--------+---------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> select emp_id, name from employees where department_id is null;
++--------+--------+
+| emp_id | name   |
++--------+--------+
+|    105 | Eswar  |
+|    109 | Ishita |
++--------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select e.emp_id, e.name, p.project_name from employees e left join projects p on e.emp_id = p.emp_id where project_name is null;
++--------+--------+--------------+
+| emp_id | name   | project_name |
++--------+--------+--------------+
+|    101 | Arjun  | NULL         |
+|    105 | Eswar  | NULL         |
+|    108 | Harish | NULL         |
+|    109 | Ishita | NULL         |
++--------+--------+--------------+
+4 rows in set (0.00 sec)
+
+mysql> -- get all departments and the employees in them.
+mysql> select e.emp_id, e.name, d.department_name from employees e right join departments d on e.department_id = d.department_id;
++--------+---------+-----------------+
+| emp_id | name    | department_name |
++--------+---------+-----------------+
+|    101 | Arjun   | Human Resources |
+|    107 | Gowri   | Engineering     |
+|    103 | Charan  | Engineering     |
+|    102 | Bhavana | Engineering     |
+|    110 | Jagan   | Marketing       |
+|    104 | Divya   | Marketing       |
+|    106 | Farhan  | Finance         |
+|    108 | Harish  | Operations      |
++--------+---------+-----------------+
+8 rows in set (0.00 sec)
+
+mysql> insert into departments values(6, 'Sales');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select e.emp_id, e.name, d.department_name from employees e right join departments d on e.department_id = d.department_id;
++--------+---------+-----------------+
+| emp_id | name    | department_name |
++--------+---------+-----------------+
+|    101 | Arjun   | Human Resources |
+|    107 | Gowri   | Engineering     |
+|    103 | Charan  | Engineering     |
+|    102 | Bhavana | Engineering     |
+|    110 | Jagan   | Marketing       |
+|    104 | Divya   | Marketing       |
+|    106 | Farhan  | Finance         |
+|    108 | Harish  | Operations      |
+|   NULL | NULL    | Sales           |
++--------+---------+-----------------+
+9 rows in set (0.00 sec)
+
+mysql> select e1.name as employee1, e2.name as employee2, e1.department_id from employees e1 join e2 on e1.department_id = e2.department_id and e1.emp_id != e2.emp_id;
+ERROR 1146 (42S02): Table 'cg_mysql.e2' doesn't exist
+mysql> select e1.name as employee1, e2.name as employee2, e1.department_id from employees e1 join employees e2 on e1.department_id = e2.department_id and e1.emp_id != e2.emp_id;
++-----------+-----------+---------------+
+| employee1 | employee2 | department_id |
++-----------+-----------+---------------+
+| Gowri     | Bhavana   |             2 |
+| Charan    | Bhavana   |             2 |
+| Gowri     | Charan    |             2 |
+| Bhavana   | Charan    |             2 |
+| Jagan     | Divya     |             3 |
+| Charan    | Gowri     |             2 |
+| Bhavana   | Gowri     |             2 |
+| Divya     | Jagan     |             3 |
++-----------+-----------+---------------+
+8 rows in set (0.00 sec)
+
+mysql> select e.name, d.department_name from employees e left join departments d on e.department_id = d.department_id
+    -> union
+    -> select e.name, d.department_name from employees e right join departments d on e.department_id = d.department_id;
++---------+-----------------+
+| name    | department_name |
++---------+-----------------+
+| Arjun   | Human Resources |
+| Bhavana | Engineering     |
+| Charan  | Engineering     |
+| Divya   | Marketing       |
+| Eswar   | NULL            |
+| Farhan  | Finance         |
+| Gowri   | Engineering     |
+| Harish  | Operations      |
+| Ishita  | NULL            |
+| Jagan   | Marketing       |
+| NULL    | Sales           |
++---------+-----------------+
+11 rows in set (0.05 sec)
+
+mysql> select d.department_name, count(e.emp_id) as total_employees from departments d left join employee e on e.department_id = d.department_id group by d.department_name;
+ERROR 1146 (42S02): Table 'cg_mysql.employee' doesn't exist
+mysql> select d.department_name, count(e.emp_id) as total_employees from departments d left join employees e on e.department_id = d.department_id group by d.department_name;
++-----------------+-----------------+
+| department_name | total_employees |
++-----------------+-----------------+
+| Human Resources |               1 |
+| Engineering     |               3 |
+| Marketing       |               2 |
+| Finance         |               1 |
+| Operations      |               1 |
+| Sales           |               0 |
++-----------------+-----------------+
+6 rows in set (0.04 sec)
+
+mysql> select d.department_name, sum(e.salary) as total_salary from departments d left join employees e on e.department_id = d.department_id group by d.department_name;
++-----------------+--------------+
+| department_name | total_salary |
++-----------------+--------------+
+| Human Resources |     50000.00 |
+| Engineering     |    199000.00 |
+| Marketing       |    105000.00 |
+| Finance         |     55000.00 |
+| Operations      |     48000.00 |
+| Sales           |         NULL |
++-----------------+--------------+
+6 rows in set (0.00 sec)
+
+mysql> select e.name, count(p.project_id) as total_projects from employees e left join projects p on e.emp_id = p.emp_id group by name;
++---------+----------------+
+| name    | total_projects |
++---------+----------------+
+| Arjun   |              0 |
+| Bhavana |              2 |
+| Charan  |              1 |
+| Divya   |              1 |
+| Eswar   |              0 |
+| Farhan  |              1 |
+| Gowri   |              1 |
+| Harish  |              0 |
+| Ishita  |              0 |
+| Jagan   |              1 |
++---------+----------------+
+10 rows in set (0.00 sec)
+
+mysql> select e.name, d.department, e.salary from employees e join departments d on e.department_id = d.department_id order by e.salary;
+ERROR 1054 (42S22): Unknown column 'd.department' in 'field list'
+mysql> select e.name, d.department_name, e.salary from employees e join departments d on e.department_id = d.department_id order by e.salary;
++---------+-----------------+----------+
+| name    | department_name | salary   |
++---------+-----------------+----------+
+| Divya   | Marketing       | 45000.00 |
+| Harish  | Operations      | 48000.00 |
+| Arjun   | Human Resources | 50000.00 |
+| Farhan  | Finance         | 55000.00 |
+| Jagan   | Marketing       | 60000.00 |
+| Gowri   | Engineering     | 62000.00 |
+| Bhavana | Engineering     | 65000.00 |
+| Charan  | Engineering     | 72000.00 |
++---------+-----------------+----------+
+8 rows in set (0.00 sec)
+
+mysql> select d.department_name, count(e.emp_id) as total_employees from departments d left join employees e on e.department_id = d.department_id group by d.department_name order by total_employees desc;
++-----------------+-----------------+
+| department_name | total_employees |
++-----------------+-----------------+
+| Engineering     |               3 |
+| Marketing       |               2 |
+| Human Resources |               1 |
+| Finance         |               1 |
+| Operations      |               1 |
+| Sales           |               0 |
++-----------------+-----------------+
+6 rows in set (0.00 sec)
+
+mysql> select d.department_name, count(e.emp_id) as total_employees from departments d left join employees e on e.department_id = d.department_id group by d.department_name where total_employees > 1 order by total_employees desc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where total_employees > 1 order by total_employees desc' at line 1
+mysql> select d.department_name, count(e.emp_id) as total_employees from departments d left join employees e on e.department_id = d.department_id group by d.department_name having total_employees > 1 order by total_employees desc;
++-----------------+-----------------+
+| department_name | total_employees |
++-----------------+-----------------+
+| Engineering     |               3 |
+| Marketing       |               2 |
++-----------------+-----------------+
+2 rows in set (0.00 sec)
+
+mysql> select d.department_name, sum(e.salary) as total_salary from departments d left join employees e on e.department_id = d.department_id group by d.department_name having total_salary > 50000 order by total_salary;
++-----------------+--------------+
+| department_name | total_salary |
++-----------------+--------------+
+| Finance         |     55000.00 |
+| Marketing       |    105000.00 |
+| Engineering     |    199000.00 |
++-----------------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> notee

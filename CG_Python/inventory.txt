@@ -1,0 +1,6 @@
+Laptop,5
+Mouse,20
+Keyboard,10
+pen,50
+notebook,25
+bag,10

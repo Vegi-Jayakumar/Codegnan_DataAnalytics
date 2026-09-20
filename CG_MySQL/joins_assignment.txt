@@ -1,0 +1,276 @@
+mysql> use cg_mysql;
+Database changed
+
+mysql> CREATE TABLE Students (student_id INT PRIMARY KEY, name VARCHAR(100), age INT);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> CREATE TABLE Courses (course_id INT PRIMARY KEY, course_name VARCHAR(100));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> CREATE TABLE Enrollments (enrollment_id INT PRIMARY KEY, student_id INT, course_id INT);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql>  
+mysql> INSERT INTO Students VALUES
+    -> (1, 'Arjun', 20), (2, 'Bhavana', 21), (3, 'Charan', 22), (4, 'Divya', 20),
+    -> (5, 'Eswar', 23), (6, 'Farhan', 21), (7, 'Gowri', 22);
+Query OK, 7 rows affected (0.01 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql>  
+mysql> INSERT INTO Courses VALUES
+    -> (101, 'Mathematics'), (102, 'Physics'), (103, 'Biology'), (104, 'Chemistry'), (105, 'Computer Science');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql>  
+mysql> INSERT INTO Enrollments VALUES
+    -> (1, 1, 101), (2, 2, 101), (3, 2, 102), (4, 3, 103),
+    -> (5, 4, 101), (6, 5, 104), (7, 1, 102), (8, 6, 105);
+Query OK, 8 rows affected (0.06 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> select * from students;
++------------+---------+------+
+| student_id | name    | age  |
++------------+---------+------+
+|          1 | Arjun   |   20 |
+|          2 | Bhavana |   21 |
+|          3 | Charan  |   22 |
+|          4 | Divya   |   20 |
+|          5 | Eswar   |   23 |
+|          6 | Farhan  |   21 |
+|          7 | Gowri   |   22 |
++------------+---------+------+
+7 rows in set (0.00 sec)
+
+mysql> select * from courses;
++-----------+------------------+
+| course_id | course_name      |
++-----------+------------------+
+|       101 | Mathematics      |
+|       102 | Physics          |
+|       103 | Biology          |
+|       104 | Chemistry        |
+|       105 | Computer Science |
++-----------+------------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from enrollments;
++---------------+------------+-----------+
+| enrollment_id | student_id | course_id |
++---------------+------------+-----------+
+|             1 |          1 |       101 |
+|             2 |          2 |       101 |
+|             3 |          2 |       102 |
+|             4 |          3 |       103 |
+|             5 |          4 |       101 |
+|             6 |          5 |       104 |
+|             7 |          1 |       102 |
+|             8 |          6 |       105 |
++---------------+------------+-----------+
+8 rows in set (0.00 sec)
+
+mysql> select s.name, c.course_name from enrollments e join students s on e.student_id = s.student_id join courses c on e.course_id = c.course_id;
++---------+------------------+
+| name    | course_name      |
++---------+------------------+
+| Arjun   | Mathematics      |
+| Bhavana | Mathematics      |
+| Bhavana | Physics          |
+| Charan  | Biology          |
+| Divya   | Mathematics      |
+| Eswar   | Chemistry        |
+| Arjun   | Physics          |
+| Farhan  | Computer Science |
++---------+------------------+
+8 rows in set (0.00 sec)
+
+mysql> select c.course_name, s.name from courses c join enrollments e on c.course_id = e.course_id join students s on e.student_id = s.student_id;
++------------------+---------+
+| course_name      | name    |
++------------------+---------+
+| Mathematics      | Arjun   |
+| Mathematics      | Bhavana |
+| Physics          | Bhavana |
+| Biology          | Charan  |
+| Mathematics      | Divya   |
+| Chemistry        | Eswar   |
+| Physics          | Arjun   |
+| Computer Science | Farhan  |
++------------------+---------+
+8 rows in set (0.00 sec)
+
+mysql> select s.name from students s join enrollments e on s.student_id = e.student_id join courses c on e.course_id = c.course_id where c.course_name = 'Physics';
++---------+
+| name    |
++---------+
+| Bhavana |
+| Arjun   |
++---------+
+2 rows in set (0.05 sec)
+
+mysql> select s.name, c.course_name from students s left join enrollments e on s.student_id = e.student_id left join courses c on e.course_id = c.course_id;
++---------+------------------+
+| name    | course_name      |
++---------+------------------+
+| Arjun   | Physics          |
+| Arjun   | Mathematics      |
+| Bhavana | Physics          |
+| Bhavana | Mathematics      |
+| Charan  | Biology          |
+| Divya   | Mathematics      |
+| Eswar   | Chemistry        |
+| Farhan  | Computer Science |
+| Gowri   | NULL             |
++---------+------------------+
+9 rows in set (0.00 sec)
+
+mysql> select c.course_name, s.name from courses c left join enrollments e on c.course_id = e.course_id left join students s on e.student_id = s.student_id; 
++------------------+---------+
+| course_name      | name    |
++------------------+---------+
+| Mathematics      | Divya   |
+| Mathematics      | Bhavana |
+| Mathematics      | Arjun   |
+| Physics          | Arjun   |
+| Physics          | Bhavana |
+| Biology          | Charan  |
+| Chemistry        | Eswar   |
+| Computer Science | Farhan  |
++------------------+---------+
+8 rows in set (0.00 sec)
+
+mysql> select s.name, c.course_name from students s left join enrollments e on s.student_id = e.student_id right join courses c on e.course_id = c.course_id;
++---------+------------------+
+| name    | course_name      |
++---------+------------------+
+| Arjun   | Mathematics      |
+| Bhavana | Mathematics      |
+| Divya   | Mathematics      |
+| Bhavana | Physics          |
+| Arjun   | Physics          |
+| Charan  | Biology          |
+| Eswar   | Chemistry        |
+| Farhan  | Computer Science |
++---------+------------------+
+8 rows in set (0.00 sec)
+
+mysql> select s.name, c.course_name from students s left join enrollments e on s.student_id = e.student_id left join courses c on e.course_id = c.course_id
+    -> union
+    -> select s.name, c.course_name from students s right join enrollments e on s.student_id = e.student_id right join courses c on e.course_id = c.course_id;
++---------+------------------+
+| name    | course_name      |
++---------+------------------+
+| Arjun   | Physics          |
+| Arjun   | Mathematics      |
+| Bhavana | Physics          |
+| Bhavana | Mathematics      |
+| Charan  | Biology          |
+| Divya   | Mathematics      |
+| Eswar   | Chemistry        |
+| Farhan  | Computer Science |
+| Gowri   | NULL             |
++---------+------------------+
+9 rows in set (0.00 sec)
+
+mysql> select s1.name as student1, s2.name as student2, s1.age from students s1 join students s2 on s1.age = s2.age and s1.student_id < s2.student_id;
++----------+----------+------+
+| student1 | student2 | age  |
++----------+----------+------+
+| Arjun    | Divya    |   20 |
+| Bhavana  | Farhan   |   21 |
+| Charan   | Gowri    |   22 |
++----------+----------+------+
+3 rows in set (0.03 sec)
+
+mysql> select c.course_name, count(e.student_id) as total_students from courses c left join enrollments e on c.course_id = e.course_id group by c.course_name;
++------------------+----------------+
+| course_name      | total_students |
++------------------+----------------+
+| Mathematics      |              3 |
+| Physics          |              2 |
+| Biology          |              1 |
+| Chemistry        |              1 |
+| Computer Science |              1 |
++------------------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> select s.name, count(e.course_id) as total_courses from students s left join enrollments e on s.student_id = e.student_id group by s.name;
++---------+---------------+
+| name    | total_courses |
++---------+---------------+
+| Arjun   |             2 |
+| Bhavana |             2 |
+| Charan  |             1 |
+| Divya   |             1 |
+| Eswar   |             1 |
+| Farhan  |             1 |
+| Gowri   |             0 |
++---------+---------------+
+7 rows in set (0.00 sec)
+
+mysql> select s.name, c.course_name from students s left join enrollments e on s.student_id = e.student_id left join courses c on e.course_id = c.course_id order by s.name;
++---------+------------------+
+| name    | course_name      |
++---------+------------------+
+| Arjun   | Physics          |
+| Arjun   | Mathematics      |
+| Bhavana | Physics          |
+| Bhavana | Mathematics      |
+| Charan  | Biology          |
+| Divya   | Mathematics      |
+| Eswar   | Chemistry        |
+| Farhan  | Computer Science |
+| Gowri   | NULL             |
++---------+------------------+
+9 rows in set (0.00 sec)
+
+mysql> select s.name, c.course_name from enrollments e join students s on e.student_id = s.student_id join courses c on e.course_id = c.course_id order by c.course_name;
++---------+------------------+
+| name    | course_name      |
++---------+------------------+
+| Charan  | Biology          |
+| Eswar   | Chemistry        |
+| Farhan  | Computer Science |
+| Arjun   | Mathematics      |
+| Bhavana | Mathematics      |
+| Divya   | Mathematics      |
+| Bhavana | Physics          |
+| Arjun   | Physics          |
++---------+------------------+
+8 rows in set (0.00 sec)
+
+mysql> select c.course_name, count(e.student_id) as total_students from courses c join enrollments e on c.course_id = e.course_id group by c.course_name having total_students > 1;
++-------------+----------------+
+| course_name | total_students |
++-------------+----------------+
+| Mathematics |              3 |
+| Physics     |              2 |
++-------------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> select s.name, count(e.course_id) as total_courses from students s join enrollments e on s.student_id = e.student_id group by s.name having total_courses > 1;
++---------+---------------+
+| name    | total_courses |
++---------+---------------+
+| Arjun   |             2 |
+| Bhavana |             2 |
++---------+---------------+
+2 rows in set (0.00 sec)
+
+mysql> select s.name, count(e.course_id) as total_enrollments from students s left join enrollments e on s.student_id = e.student_id group by s.name order by total_enrollments desc;
++---------+-------------------+
+| name    | total_enrollments |
++---------+-------------------+
+| Arjun   |                 2 |
+| Bhavana |                 2 |
+| Charan  |                 1 |
+| Divya   |                 1 |
+| Eswar   |                 1 |
+| Farhan  |                 1 |
+| Gowri   |                 0 |
++---------+-------------------+
+7 rows in set (0.00 sec)
+
+mysql> notee

@@ -569,11 +569,9 @@ for i in range(3):
     for j in range(3):
         print("*")
 
-# char = 65
-# for i in range(4):
-#     for j in range(4):
-#         print(chr(char),end=" ")
-#     char+=1
-#     print()
+for i in range(4):
+    for j in range(4):
+        print(chr(65+j),end=" ")
+    print()
 
 '''

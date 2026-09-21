@@ -401,7 +401,7 @@ file.close()
 # with open('test.txt','r') as file:
 #     print(file.read())
 
-'''
+
 #Student Marks File Manager
 
 # file = open('marks.txt','w')
@@ -542,3 +542,38 @@ file.close()
 #         print('Average mark: %.2f'%avg)
 # except FileNotFoundError:
 #     print('students.txt file not found')
+
+Nested Loops --> (for in for) --> These are primarily used for pattern printings matrix operations and problems solving scenarios (data structures)..
+inner loop will be completely executed for every outer loop
+
+for i in range(2):  #i=0,1
+    for j in range(2):  #j=0,1
+        print(f"i={i}, j={j}")
+
+In above case for complete j value of 0, i value will be 0,1,2 and follows same for others
+outer loop defines rows, inner loop defines columns
+
+for i in range(2):
+    for j in range(i):
+        print(f"i={i},j={j}")   #output: i=1,j=0
+
+for i in range(2):
+    for j in range(i+1):
+        print(f"i={i},j={j}")
+
+for i in range(2):
+    for j in range(i-1):    #as here for i=0,j becomes -ve, i=1 j becomes 0
+        print(f"i={i},j={j}")   #Output = i=2,j=0
+
+for i in range(3):
+    for j in range(3):
+        print("*")
+
+# char = 65
+# for i in range(4):
+#     for j in range(4):
+#         print(chr(char),end=" ")
+#     char+=1
+#     print()
+
+'''

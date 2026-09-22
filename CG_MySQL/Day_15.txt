@@ -1,0 +1,428 @@
+mysql> use cg_mysql;
+Database changed
+mysql> /* select * from customers;
+   /*> */
+mysql> select * from customers;
++-------------+---------------+-----------+---------------+
+| customer_id | customer_name | city      | customer_type |
++-------------+---------------+-----------+---------------+
+|           1 | Rahul         | Delhi     | Premium       |
+|           2 | Meena         | Mumbai    | Regular       |
+|           3 | Arjun         | Bangalore | Premium       |
+|           4 | Kavya         | Delhi     | Regular       |
+|           5 | Suresh        | Chennai   | Premium       |
+|           6 | Anjali        | Mumbai    | Regular       |
+|           7 | Vikram        | Delhi     | Regular       |
+|           8 | Pooja         | Bangalore | Premium       |
+|           9 | Devi          | Chennai   | Regular       |
++-------------+---------------+-----------+---------------+
+9 rows in set (0.05 sec)
+
+mysql> select * from products;
++------------+--------------+-------------+----------+
+| product_id | product_name | category    | price    |
++------------+--------------+-------------+----------+
+|          1 | Laptop       | Electronics | 55000.00 |
+|          2 | Mobile       | Electronics | 25000.00 |
+|          3 | Chair        | Furniture   |  7000.00 |
+|          4 | Table        | Furniture   |  9000.00 |
+|          5 | Headphones   | Electronics |  3000.00 |
+|          6 | Bookshelf    | Furniture   |  6000.00 |
++------------+--------------+-------------+----------+
+6 rows in set (0.01 sec)
+
+mysql> select * from orders;
++----------+-------------+------------+----------+------------+----------+
+| order_id | customer_id | product_id | quantity | order_date | amount   |
++----------+-------------+------------+----------+------------+----------+
+|        1 |           1 |          1 |        1 | 2023-01-05 | 55000.00 |
+|        2 |           2 |          2 |        1 | 2023-01-10 | 25000.00 |
+|        3 |           3 |          3 |        2 | 2023-02-01 | 14000.00 |
+|        4 |           1 |          5 |        2 | 2023-02-15 |  6000.00 |
+|        5 |           4 |          4 |        1 | 2023-03-03 |  9000.00 |
+|        6 |           5 |          2 |        2 | 2023-03-20 | 50000.00 |
+|        7 |           6 |          4 |        3 | 2023-04-02 | 18000.00 |
+|        8 |           3 |          5 |        1 | 2023-04-15 |  3000.00 |
+|        9 |           7 |          3 |        1 | 2023-05-01 |  7000.00 |
+|       10 |           8 |          1 |        1 | 2023-05-20 | 54000.00 |
+|       11 |           2 |          3 |        2 | 2023-06-02 | 12000.00 |
+|       12 |           5 |          4 |        1 | 2023-06-15 |  8500.00 |
++----------+-------------+------------+----------+------------+----------+
+12 rows in set (0.02 sec)
+
+mysql> select product_name from products where price > all(select price from products where category = 'furniture');
++--------------+
+| product_name |
++--------------+
+| Laptop       |
+| Mobile       |
++--------------+
+2 rows in set (0.04 sec)
+
+mysql> select product_name from products where price < all(select price from products where category = 'furniture');
++--------------+
+| product_name |
++--------------+
+| Headphones   |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select order_id, amount from orders where amount > all(select amount from orders where customer_id = (select customer_id from customers where customer_name = 'Meena'));
++----------+----------+
+| order_id | amount   |
++----------+----------+
+|        1 | 55000.00 |
+|        6 | 50000.00 |
+|       10 | 54000.00 |
++----------+----------+
+3 rows in set (0.05 sec)
+
+mysql> -- nested subqueries
+mysql> select customer_name from customers where customer_id in (select customer_id from orders where product_id = (select product_id from products where price = (select max(price) from products)));
++---------------+
+| customer_name |
++---------------+
+| Rahul         |
+| Pooja         |
++---------------+
+2 rows in set (0.05 sec)
+
+mysql> select category from products where product_id = (select product_id from orders where amount = (select max(amount) from orders));
++-------------+
+| category    |
++-------------+
+| Electronics |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select city from customers where customer_id in (select customer_id from orders where product_id = (select product_id from products where price = (select min(price) from products)));
++-----------+
+| city      |
++-----------+
+| Delhi     |
+| Bangalore |
++-----------+
+2 rows in set (0.00 sec)
+
+mysql> select customer_name from customers c where (select count(*) from orders o where o.customer_id = c.customer_id)>1;
++---------------+
+| customer_name |
++---------------+
+| Rahul         |
+| Meena         |
+| Arjun         |
+| Suresh        |
++---------------+
+4 rows in set (0.00 sec)
+
+mysql> select p1.product_name, p1.category, p1.price from products p1 where 1 = (select count(*) from products p2 where p2.category = p1.category and p2.price = p1.price);
++--------------+-------------+----------+
+| product_name | category    | price    |
++--------------+-------------+----------+
+| Laptop       | Electronics | 55000.00 |
+| Mobile       | Electronics | 25000.00 |
+| Chair        | Furniture   |  7000.00 |
+| Table        | Furniture   |  9000.00 |
+| Headphones   | Electronics |  3000.00 |
+| Bookshelf    | Furniture   |  6000.00 |
++--------------+-------------+----------+
+6 rows in set (0.04 sec)
+
+mysql> select p1.product_name, p1.category, p1.price from products p1 where 1 = (select count(*) from products p2 where p2.category = p1.category and p2.price < p1.price);
++--------------+-------------+----------+
+| product_name | category    | price    |
++--------------+-------------+----------+
+| Mobile       | Electronics | 25000.00 |
+| Chair        | Furniture   |  7000.00 |
++--------------+-------------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select customer_name from customers c where exists(select 1 from orders o where o.customer_id = c.customer_id);
++---------------+
+| customer_name |
++---------------+
+| Rahul         |
+| Meena         |
+| Arjun         |
+| Kavya         |
+| Suresh        |
+| Anjali        |
+| Vikram        |
+| Pooja         |
++---------------+
+8 rows in set (0.00 sec)
+
+mysql> select customer_name from customers c where not exists(select 1 from orders o where o.customer_id = c.customer_id);
++---------------+
+| customer_name |
++---------------+
+| Devi          |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select * from employees;
++--------+---------+---------------+----------+
+| emp_id | name    | department_id | salary   |
++--------+---------+---------------+----------+
+|    101 | Arjun   |             1 | 50000.00 |
+|    102 | Bhavana |             2 | 65000.00 |
+|    103 | Charan  |             2 | 72000.00 |
+|    104 | Divya   |             3 | 45000.00 |
+|    105 | Eswar   |          NULL | 40000.00 |
+|    106 | Farhan  |             4 | 55000.00 |
+|    107 | Gowri   |             2 | 62000.00 |
+|    108 | Harish  |             5 | 48000.00 |
+|    109 | Ishita  |          NULL | 53000.00 |
+|    110 | Jagan   |             3 | 60000.00 |
++--------+---------+---------------+----------+
+10 rows in set (0.02 sec)
+
+mysql> -- second min, third max and third min
+mysql> select min(salary) from employees where salary > (select min(salary) from employees);
++-------------+
+| min(salary) |
++-------------+
+|    45000.00 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select min(salary) as third_min from employees where salary > (select min(salary) as second_min from employees where salary > (select min(salary) from employees));
++-----------+
+| third_min |
++-----------+
+|  48000.00 |
++-----------+
+1 row in set (0.01 sec)
+
+mysql> select max(salary) as third_max from employees where salary < (select max(salary) as second_max from employees where salary < (select max(salary) from employees));
++-----------+
+| third_max |
++-----------+
+|  62000.00 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> select d.department_id, d.department_name, min(e.salary) as second_min_salary from employees e join departments d on e.department_id = d.department_id where e.salary > (select min(salary) from employees e2 where e2.department_id = e.department_id) group by d.department_id;
++---------------+-----------------+-------------------+
+| department_id | department_name | second_min_salary |
++---------------+-----------------+-------------------+
+|             2 | Engineering     |          65000.00 |
+|             3 | Marketing       |          60000.00 |
++---------------+-----------------+-------------------+
+2 rows in set (0.06 sec)
+
+mysql> select d.department_id, d.department_name, max(e.salary) as second_max_salary from employees e join departments d on e.department_id = d.department_id where e.salary < (select max(salary) from employees e2 where e2.department_id = e.department_id) group by d.department_id;
++---------------+-----------------+-------------------+
+| department_id | department_name | second_max_salary |
++---------------+-----------------+-------------------+
+|             2 | Engineering     |          65000.00 |
+|             3 | Marketing       |          45000.00 |
++---------------+-----------------+-------------------+
+2 rows in set (0.00 sec)
+
+mysql> 
+mysql> /* Views
+   /*> A view is a virtual table created from the result of select query. It does'nt normally store the actual data separately instead it stores the SQL Query and whenever you access the view,
+   /*> MySQL retrieves the data from the underlying tables.
+   /*> 
+   /*> Why do we need views?
+   /*> 1. simplify complex queries.
+   /*> 2. reuse query logic.
+   /*> 3. data security.
+   /*> 4. simplified reporting.
+   /*> 
+   /*> Advantages of views
+   /*> 1. simplicity
+   /*> 2. security
+   /*> 3. reusability
+   /*> 4. consistancy
+   /*> 5. maintainability
+   /*> 6. no extra storage cost
+   /*> 
+   /*> difference between table and view
+   /*> - table physically stores data -- view is virtual table based on query
+   /*> - can store records directly -- usually doesn't store separate records
+   /*> - create using create table -- create using create view
+   /*> - contains all the data -- can show selected rows/columns
+   /*> -used for permanent data storage -- mainly used for abstract, security, and reusable queries.
+   /*> 
+   /*> syntax: create view view_name as select column_name from table_name where condition;
+   /*> 
+   /*> alter view: alter view view_name as select new_columns from new_tables where new_conditions;
+   /*> 
+   /*> drop view: drop view view_name;
+   /*> */
+mysql> 
+mysql> drop table employees;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> drop table departments;
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> CREATE TABLE departments (
+    -> 	dept_id INT PRIMARY KEY AUTO_INCREMENT,
+    -> 	dept_name VARCHAR(50),
+    -> 	location VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql>  
+mysql> CREATE TABLE employees (
+    -> 	emp_id INT PRIMARY KEY AUTO_INCREMENT,
+    -> 	emp_name VARCHAR(100),
+    -> 	dept_id INT,
+    -> 	designation VARCHAR(50),
+    -> 	salary DECIMAL(10,2),
+    -> 	join_date DATE,
+    -> 	FOREIGN KEY (dept_id) REFERENCES departments(dept_id)
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> 
+mysql> INSERT INTO departments (dept_name, location) VALUES
+    -> ('IT','Hyderabad'), ('HR','Bangalore'), ('Finance','Chennai'), ('Sales','Mumbai');
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql>  
+mysql> INSERT INTO employees (emp_name, dept_id, designation, salary, join_date) VALUES
+    -> ('Rahul',1,'Software Engineer',55000,'2021-06-15'),
+    -> ('Anita',2,'HR Executive',38000,'2020-03-21'),
+    -> ('Suresh',4,'Sales Manager',52000,'2019-08-10'),
+    -> ('Priya',1,'Team Lead',65000,'2022-01-05'),
+    -> ('Kiran',3,'Finance Analyst',48000,'2018-12-11'),
+    -> ('Deepika',2,'HR Manager',60000,'2019-10-19')
+    -> ;
+Query OK, 6 rows affected (0.01 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> select * from employees;
++--------+----------+---------+-------------------+----------+------------+
+| emp_id | emp_name | dept_id | designation       | salary   | join_date  |
++--------+----------+---------+-------------------+----------+------------+
+|      1 | Rahul    |       1 | Software Engineer | 55000.00 | 2021-06-15 |
+|      2 | Anita    |       2 | HR Executive      | 38000.00 | 2020-03-21 |
+|      3 | Suresh   |       4 | Sales Manager     | 52000.00 | 2019-08-10 |
+|      4 | Priya    |       1 | Team Lead         | 65000.00 | 2022-01-05 |
+|      5 | Kiran    |       3 | Finance Analyst   | 48000.00 | 2018-12-11 |
+|      6 | Deepika  |       2 | HR Manager        | 60000.00 | 2019-10-19 |
++--------+----------+---------+-------------------+----------+------------+
+6 rows in set (0.00 sec)
+
+mysql> select * from departments;
++---------+-----------+-----------+
+| dept_id | dept_name | location  |
++---------+-----------+-----------+
+|       1 | IT        | Hyderabad |
+|       2 | HR        | Bangalore |
+|       3 | Finance   | Chennai   |
+|       4 | Sales     | Mumbai    |
++---------+-----------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> create view emp_dept_name as
+    -> select e.emp_id, e.emp_name, e.designation, d.dept_name, d.location from employees e join departments d on e.dept_id = d.dept_id;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> show full tables where table_type = 'view';
+Empty set (0.04 sec)
+
+mysql> show full tables where table_type = 'VIEW';
++--------------------+------------+
+| Tables_in_cg_mysql | Table_type |
++--------------------+------------+
+| emp_dept_name      | VIEW       |
++--------------------+------------+
+1 row in set (0.05 sec)
+
+mysql> select * from emp_dept_name;
++--------+----------+-------------------+-----------+-----------+
+| emp_id | emp_name | designation       | dept_name | location  |
++--------+----------+-------------------+-----------+-----------+
+|      1 | Rahul    | Software Engineer | IT        | Hyderabad |
+|      4 | Priya    | Team Lead         | IT        | Hyderabad |
+|      2 | Anita    | HR Executive      | HR        | Bangalore |
+|      6 | Deepika  | HR Manager        | HR        | Bangalore |
+|      5 | Kiran    | Finance Analyst   | Finance   | Chennai   |
+|      3 | Suresh   | Sales Manager     | Sales     | Mumbai    |
++--------+----------+-------------------+-----------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> create view dept_summary as
+    -> select d.dept_name, count(e.emp_id) as total_employees, sum(e.salary) as total_salary, avg(e.salary) as average_salary from employees e
+    -> join
+    -> departments d on e.dept_id = d.dept_id group by d.dept_id;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> select * from dept_summary;
++-----------+-----------------+--------------+----------------+
+| dept_name | total_employees | total_salary | average_salary |
++-----------+-----------------+--------------+----------------+
+| IT        |               2 |    120000.00 |   60000.000000 |
+| HR        |               2 |     98000.00 |   49000.000000 |
+| Finance   |               1 |     48000.00 |   48000.000000 |
+| Sales     |               1 |     52000.00 |   52000.000000 |
++-----------+-----------------+--------------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> create view emp_annual_salary as
+    -> select emp_name, salary as monthly_salary, salary*12 as annual_salary
+    -> from employees;
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> select * from emp_annual_salary;
++----------+----------------+---------------+
+| emp_name | monthly_salary | annual_salary |
++----------+----------------+---------------+
+| Rahul    |       55000.00 |     660000.00 |
+| Anita    |       38000.00 |     456000.00 |
+| Suresh   |       52000.00 |     624000.00 |
+| Priya    |       65000.00 |     780000.00 |
+| Kiran    |       48000.00 |     576000.00 |
+| Deepika  |       60000.00 |     720000.00 |
++----------+----------------+---------------+
+6 rows in set (0.04 sec)
+
+mysql> create view highest_emp_summary as
+    -> select dept_name, average_salary from dept_summary where average_salary > 50000;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> select * from highest_emp_summary;
++-----------+----------------+
+| dept_name | average_salary |
++-----------+----------------+
+| IT        |   60000.000000 |
+| Sales     |   52000.000000 |
++-----------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> alter view emp_dept_name as select e.emp_id, e.emp_name,d.dept_name from employees e join departments d on e.dept_id = d.dept_id;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> select * from emp_dept_name;
++--------+----------+-----------+
+| emp_id | emp_name | dept_name |
++--------+----------+-----------+
+|      1 | Rahul    | IT        |
+|      4 | Priya    | IT        |
+|      2 | Anita    | HR        |
+|      6 | Deepika  | HR        |
+|      5 | Kiran    | Finance   |
+|      3 | Suresh   | Sales     |
++--------+----------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> drop view highest_emp_summary;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> show full tables where table_type = 'VIEW';
++--------------------+------------+
+| Tables_in_cg_mysql | Table_type |
++--------------------+------------+
+| dept_summary       | VIEW       |
+| emp_annual_salary  | VIEW       |
+| emp_dept_name      | VIEW       |
++--------------------+------------+
+3 rows in set (0.00 sec)
+
+mysql> notee

@@ -574,4 +574,105 @@ for i in range(4):
         print(chr(65+j),end=" ")
     print()
 
+
+# for i in range(5):
+#     for j in range(i+1):
+#         print("*",end=" ")
+#     print()
+
+
+# num = 1
+# for i in range(4):
+#     for j in range(i+1):
+#         print(num,end=" ")
+#         num+=1
+#     print()
+
+
+# for i in range(5):
+#     for j in range(i+1):
+#         print(j,end=" ")
+#     print()
+
+
+# inverted triangle
+# for i in range(5):
+#     for j in range(i, 5):
+#         print('*',end=" ")
+#     print()
+
+
+# pyramid pattern
+# for i in range(5):
+#     for j in range(5-i):
+#         print("",end=" ")
+#     for k in range(i+1):
+#         print("*", end=" ")
+#     print()
+
+
+# inverted pyramid pattern
+# for i in range(5):
+#     for j in range(i+1):
+#         print("",end=" ")
+#     for k in range(5-i):
+#         print("*", end=" ")
+#     print()
+
+
+# floyd's triangle
+# char = 65
+# for i in range(4):
+#     for j in range(i+1):
+#         print(chr(char), end=" ")
+#         char+=1
+#     print()
+
+
+# number triangle
+# for i in range(5):
+#     for j in range(i+1):
+#         print(i,end=" ")
+#     print()
+
+
+# Character triangle
+# char = 65
+# for i in range(4):
+#     for j in range(i+1):
+#         print(chr(char), end=" ")
+#     char+=1
+#     print()
+
+
+# diamond pattern
+# for i in range(5):
+#     for j in range(5-i):
+#         print("",end=" ")
+#     for k in range(i+1):
+#         print("*",end=" ")
+#     print()
+# for i in range(4):
+#     for j in range(i+2):
+#         print("",end=" ")
+#     for k in range(4-i):
+#         print("*",end=" ")
+#     print()
+
+functions --> a function is a block of code that performs a specific task
+types of functions: user-defined functions, builtin functions, anonymous functions(lambda), recursive functions
+
+def function_name(parameters):
+    """Doc string (describe your function)"""
+    function statements
+    return values
+
+function_name(arguments)
+
+types of arguments: positional arguments, keyword arguments, default arguments, variable length arguments, keyword variable length arguments
+
+positional arguments --> order of arguments in function definition and function call should match
+keyword arguments --> name of the arguments should match, order doesn't matter
+default arguments --> we can make any number of arguments as default. but we have a thumb rule: only first argument cannot be default, non-default arguments can be assigned after default arguments.
+
 '''

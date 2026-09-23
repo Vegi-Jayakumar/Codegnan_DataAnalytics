@@ -674,5 +674,62 @@ types of arguments: positional arguments, keyword arguments, default arguments, 
 positional arguments --> order of arguments in function definition and function call should match
 keyword arguments --> name of the arguments should match, order doesn't matter
 default arguments --> we can make any number of arguments as default. but we have a thumb rule: only first argument cannot be default, non-default arguments can be assigned after default arguments.
+variable length arguments --> (*args) --> we can pass any number of arguments, but the data will be stored in a tuple, but we use *args as representation. we can change 'args' but we must include '*' before the parameter.
+keyword variable length arguments --> (**kwargs) --> we can pass any number of arguments in the form of key-value pairs, but the data will be stored in a dictionary, but we use **kwargs as representation. we can change 'kwargs' but we must include '**' before the parameter.
+
+def new(*a):
+    """usage of variable length arguments"""
+    print(a)
+    print(type(a))
+
+new(1,2,3,4,5,6,7,8,9,10)
+new()   # it returns empty tuple as we did not pass any arguments
+new(["hello","World",69])   # it returns list inside a tuple and considers the list as 1 element
+new(*["Hello","World",69])  # it unpacks the list and returns individual elements in a tuple  
+a,*b,c = 1,"Hello","World",69   # 1 is assigned to a, 69 is assigned to c, and the values in between are assigned to b in the form of list
+* can also be used to unpack the values from a collection: print(*[1,"Hello","World",69])  # output: 1 Hello World 69
+
+# Task:
+def sum(*args):
+    """Sum of all the arguments passed to the function"""
+    total = 0
+    for i in args:
+        #we can use isinstance(i,(int,float)) in if-else statement.
+        # if isinstance(i,(int,float)):
+        #   total+=i
+        # else:
+        #   continue 
+        #we can use type(i) to verify the type of input
+        # if type(i) == int or type(i) == float:
+        #   total+=i
+        #we can use try-except block to handle the error and continue, but it's not recommended to use try-except for control flow.
+        try:
+            total+=i
+        except TypeError:
+            continue
+    return total
+
+print(sum(1,2,3,'Hi','Hello',4,5,6,7,8,9))
+
+def admission(**kwargs):
+    """usage of keyword variable length arguments"""
+    print(kwargs)
+    print(type(kwargs))
+
+admission()  #it returns empty dictionary as we did not pass any arguments
+admission(name="John", age=20, course="Computer Science")
+admission(**{"name": "John", "age": 20, "course": "Computer Science"})  #it unpacks the dictionary and returns individual key:value pairs in a dictionary
+
+# Task: 
+def simple(*args,**kwargs):
+    """Usage of *args and **kwargs"""
+    total = 0
+    for i in args:
+        total+=i
+    print(total)
+    for key,value in kwargs.items():
+        print(f"key is {key} and value is {value}")
+
+simple(1,2,3,4,5,6,7,8,9,10,name="John", age=20, course="Computer Science")
 
 '''

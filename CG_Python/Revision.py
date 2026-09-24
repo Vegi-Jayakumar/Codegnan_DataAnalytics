@@ -662,6 +662,8 @@ for i in range(4):
 functions --> a function is a block of code that performs a specific task
 types of functions: user-defined functions, builtin functions, anonymous functions(lambda), recursive functions
 
+> User-defined functions
+
 def function_name(parameters):
     """Doc string (describe your function)"""
     function statements
@@ -731,5 +733,35 @@ def simple(*args,**kwargs):
         print(f"key is {key} and value is {value}")
 
 simple(1,2,3,4,5,6,7,8,9,10,name="John", age=20, course="Computer Science")
+
+Scope of the variables --> Scope is basically the region or area where the data is accessible.
+> Local scope --> variable(s) defined inside the function are accessible only inside that function.
+> global scope --> variable(s) defined outside the function are accessible from anywhere in the program.
+> global keyword --> we have to use this keyword to perform operations on a global variable inside a function.
+> enclosing scope(nonlocal keyword) --> we use non local keyword to perform operations on a variable(s) defined inside a enclosing function. It is mainly used for nested functions.
+> built-in scope --> Usage of built-in functions as variables is strictly not recommended as it may lead to confusion.
+> LEGB rule --> Local, Enclosed, Global, Built-in (the order of searching the variables in the scope)
+
+> Built-in functions
+
+#print(dir()) #list all the available built in functions
+#print(dir(__builtins__)) # it returns list of all the built-in functions and errors
+every builtin datatype is builtin function --> int, float, str, list, tuple, set, dict, bool
+print(float(int(bool(24)))) #output: 1.0 # functions as first class objects
+
+# None, '', 0, False, [], {}, () are considered as False or empty values.
+
+#all() and any()
+> all() --> returns true if all the elements in the iterable are true or if the iterable is empty, else it returns false
+> any() --> returns true if any of the elements in the iterable are true, else it returns false
+
+print(bin(12))                  #binary # output: 0b1100
+print(chr(67))                  #character # output: C
+print(ord('A'))                 #ordinal # output: 65
+print(divmod(6,2))              #division and modulo # output: (3, 0)
+print(pow(4,3))                 #power # output: 64
+print(round(5.349761,2))        #round # output: 5.35
+
+#filter(), map(), zip(), enumerate()
 
 '''

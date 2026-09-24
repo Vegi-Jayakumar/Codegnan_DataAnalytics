@@ -1,0 +1,183 @@
+mysql> /* Triggers
+   /*> A trigger is a special type of stored program that automatically executes(fires) in response to the specific event.
+   /*> INSERT, UPDATE, DELETE occuring on a specified table. Unlike a stored procedure. a trigger never called directly.
+   /*> 
+   /*> general syntax:
+   /*> delimiter //
+   /*> create trigger trigger_name
+   /*> {before|after}{insert|update|delete}
+   /*> on table_name
+   /*> for each row
+   /*> begin
+   /*> 	--trigger logic
+   /*> 	--use new column name for inserted/updated values
+   /*> 	--use old column name for delete/previous values
+   /*> end //
+   /*> delimiter ;
+   /*> */
+mysql> CREATE TABLE Employees (
+    ->     emp_id INT PRIMARY KEY,
+    ->     emp_name VARCHAR(50),
+    ->     department VARCHAR(30),
+    ->     salary DECIMAL(10,2),
+    ->     experience INT,
+    ->     city VARCHAR(30)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO Employees VALUES
+    -> (101,'Rahul','IT',65000,5,'Hyderabad'),
+    -> (102,'Priya','HR',45000,3,'Chennai'),
+    -> (103,'Amit','Finance',70000,6,'Bangalore'),
+    -> (104,'Sneha','IT',80000,8,'Hyderabad'),
+    -> (105,'Kiran','Sales',40000,2,'Pune');
+Query OK, 5 rows affected (0.02 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE Employee_Audit(
+    ->     audit_id INT AUTO_INCREMENT PRIMARY KEY,
+    ->     emp_id INT,
+    ->     action_type VARCHAR(20),
+    ->     old_salary DECIMAL(10,2),
+    ->     new_salary DECIMAL(10,2),
+    ->     action_time DATETIME
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> select * from employees;
++--------+----------+------------+----------+------------+-----------+
+| emp_id | emp_name | department | salary   | experience | city      |
++--------+----------+------------+----------+------------+-----------+
+|    101 | Rahul    | IT         | 65000.00 |          5 | Hyderabad |
+|    102 | Priya    | HR         | 45000.00 |          3 | Chennai   |
+|    103 | Amit     | Finance    | 70000.00 |          6 | Bangalore |
+|    104 | Sneha    | IT         | 80000.00 |          8 | Hyderabad |
+|    105 | Kiran    | Sales      | 40000.00 |          2 | Pune      |
++--------+----------+------------+----------+------------+-----------+
+5 rows in set (0.04 sec)
+
+mysql> select * from employee_audit;
+Empty set (0.00 sec)
+
+mysql> -- before insert
+mysql> delimiter //
+mysql> create trigger trg_before_insert_salary
+    -> before insert
+    -> on employees
+    -> for each row
+    -> begin
+    -> 	if new.salary < 20000 then signal sqlstate'45000'
+    -> set message_text = 'salary cannot be less than 20000';
+    -> end if;
+    -> end //
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> delimiter ;
+mysql> insert into employees values(106,'Malli','IT',15000,2,'Delhi');
+ERROR 1644 (45000): salary cannot be less than 20000
+mysql> insert into employees values(106,'Malli','IT',25000,2,'Delhi');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> -- after insert
+mysql> delimiter //
+mysql> create trigger trg_after_insert
+    -> after insert
+    -> on employees
+    -> for each row
+    -> begin
+    -> 	insert into employee_audit(emp_id,action_type,new_salary,action_time)
+    -> 	values(new.emp_id,'insert',new.salary,now());
+    -> end //
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> delimiter ;
+mysql> insert into employees values(107,'Kavya','HR',55000,4,'Chennai');
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from employee_audit;
++----------+--------+-------------+------------+------------+---------------------+
+| audit_id | emp_id | action_type | old_salary | new_salary | action_time         |
++----------+--------+-------------+------------+------------+---------------------+
+|        1 |    107 | insert      |       NULL |   55000.00 | 2026-09-24 14:43:42 |
++----------+--------+-------------+------------+------------+---------------------+
+1 row in set (0.00 sec)
+
+mysql> -- before update
+mysql> delimiter //
+mysql> create trigger trg_before_update_salary
+    -> before update
+    -> on employees
+    -> for each row
+    -> begin
+    -> 	if new.salary < old.salary then signal sqlstate'45000'
+    -> 	set message_text = 'Salary cannot be lower';
+    -> end if;
+    -> end //
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> delimiter ;
+mysql> update employees set salary = 50000 where emp_id = 101;
+ERROR 1644 (45000): Salary cannot be lower
+mysql> -- after update
+mysql> delimiter //
+mysql> create trigger trg_after_update
+    -> after update on employees for each row
+    -> begin
+    -> 	insert into employee_audit(emp_id,action_type,old_salary,new_salary,action_time)
+    -> 	values(new.emp_id,'update',old.salary,new.salary,now());
+    -> end //
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> delimiter ;
+mysql> update employees set salary = 70000 where emp_id = 101;
+Query OK, 1 row affected (0.05 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee_audit;
++----------+--------+-------------+------------+------------+---------------------+
+| audit_id | emp_id | action_type | old_salary | new_salary | action_time         |
++----------+--------+-------------+------------+------------+---------------------+
+|        1 |    107 | insert      |       NULL |   55000.00 | 2026-09-24 14:43:42 |
+|        2 |    101 | update      |   65000.00 |   70000.00 | 2026-09-24 15:02:52 |
++----------+--------+-------------+------------+------------+---------------------+
+2 rows in set (0.00 sec)
+
+mysql> -- before delete
+mysql> delimiter //
+mysql> create trigger trg_before_delete_it
+    -> before delete on employees for each row
+    -> begin
+    -> 	if old.department = 'IT' then signal sqlstate'45000'
+    -> 	set message_text = 'cannot delete IT employees';
+    -> end if;
+    -> end //
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> delimiter ;
+mysql> delete from employees where emp_id = 101;
+ERROR 1644 (45000): cannot delete IT employees
+mysql> -- after delete
+mysql> delimiter //
+mysql> create trigger trg_after_delete
+    -> after delete on employees for each row
+    -> begin
+    -> 	insert into employee_audit(emp_id, action_type, old_salary, action_time)
+    -> 	values(old.emp_id,'delete',old.salary,now());
+    -> end //
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> delimiter ;
+mysql> delete from employees where emp_id = 102;
+Query OK, 1 row affected (0.05 sec)
+
+mysql> select * from employee_audit;
++----------+--------+-------------+------------+------------+---------------------+
+| audit_id | emp_id | action_type | old_salary | new_salary | action_time         |
++----------+--------+-------------+------------+------------+---------------------+
+|        1 |    107 | insert      |       NULL |   55000.00 | 2026-09-24 14:43:42 |
+|        2 |    101 | update      |   65000.00 |   70000.00 | 2026-09-24 15:02:52 |
+|        3 |    102 | delete      |   45000.00 |       NULL | 2026-09-24 15:11:50 |
++----------+--------+-------------+------------+------------+---------------------+
+3 rows in set (0.00 sec)
+
+mysql> notee

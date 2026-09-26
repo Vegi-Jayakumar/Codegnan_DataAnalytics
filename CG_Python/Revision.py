@@ -1,4 +1,4 @@
-# Day - 22
+# Revision
 
 '''
 Tokens: Keywords,variables,operators,punctuations,Literals
@@ -763,5 +763,142 @@ print(pow(4,3))                 #power # output: 64
 print(round(5.349761,2))        #round # output: 5.35
 
 #filter(), map(), zip(), enumerate()
+
+> Anonymous Functions (lambda)
+these are nameless functions (helper functions), we define them by using lambda keyword
+syntax: lambda arguments:expression
+
+areaOfRectangle = lambda l,b : l * b
+print(areaOfRectangle(7, 4))        #Output: 28
+
+areaOfSquare = lambda s : s**2 
+print(areaOfSquare(5))              #Output: 25
+
+#Task : firstname, lastname = fullname --> using lambda functions 
+
+fname = input("Enter first name: ").strip()
+lname = input("Enter last name: ").strip()
+
+fullname = lambda fn, ln : fn.title() + " " + ln.title()
+print(fullname(fname, lname))
+
+#Task : Even or Odd --> using lambda functions
+
+num = int(input("Enter a Number: "))
+iseven = lambda num: "Even" if num % 2 == 0 else "Odd"
+result = lambda num: num ** 2 if num % 2 == 0 else num ** 3
+print(iseven(num))
+print(result(num))
+
+names = ["John", "Peter", "Rohan", "Jane"]
+g = lambda x: x in names
+h = lambda names, x: names[x]
+print(g("John"))  #Output: True
+print(h(names,2))   #Output: Rohan
+
+#filter() --> we want to have specific filtered result
+
+data = [1,2,3,4,5,6,7,8,9,10]
+
+new_data = list(filter(lambda x: x%2 == 0,data))
+print(new_data) # output: [2, 4, 6, 8, 10]
+
+#Task: filter desired names from the list
+
+names = ['Saketh','Python','Akash','Neha','Sameer']
+new_names = filter(lambda i : len(i) >= 6,names)
+print(list(new_names)) # output: ['Saketh', 'Python', 'Sameer']
+
+#map() --> it maps the elements of the iterable to the function and returns the result
+
+data = [1,2,3,4,5]
+
+new_data = list(map(lambda x: x*2,data))
+print(new_data) # output: [2, 4, 6, 8, 10]
+
+#Task : multiply two lists --> using map function
+
+lst1 = list(map(int,input("Enter first list: ").split()))
+lst2 = list(map(int,input("Enter second list: ").split()))
+
+new_data = list(map(lambda x,y: x*y,lst1,lst2))
+print(new_data)
+
+#reduce --> functools module
+#reduce --> it will check the condition and make it to a single value
+
+from functools import reduce
+
+data = [1,2,3,4,5]
+
+new_data = reduce(lambda x,y: x*y,data)
+print(new_data) # output: 120
+
+#Task:find the sum and product of all elements in a list using functions
+
+data = [1,2,3,4,5]
+
+def sum(data):
+    sum = 0
+    for i in data:
+        sum +=i
+    return sum
+
+def product(data):
+    product = 1
+    for i in data:
+        product *=i
+    return product
+
+print(sum(data))    #output: 15
+print(product(data)) #output: 120
+
+#Recursive Fundtions: A function can call itself.
+#factorial, fibonacci, sum of numbers......
+#recursive functions --> Basecase (it tells when to stop the recursion)
+                     --> Resursive case (it tells how to start recursion)
+
+#factorial using recursion
+
+n = int(input("Enter value for factorial: "))
+
+def factorial(n):
+    if n == 1 or n == 0:
+        return 1
+    elif n<0:
+        return "Input must be a non-negative integer"
+    else:
+        return n * factorial(n-1)
+
+print(factorial(n))
+
+Functions are first class objects
+functions can pass another function as argument
+function can return another function
+function can be inside another function
+function can call itself
+
+modules --> a python file containing variables, functions, and classes, objects.
+user-defined modules (import), built-in modules, available modules (pypi)
+
+# import sampleModule as sm
+# # print(dir(sm))
+# # print(type(sm.data))
+# # print(type(sm.details))
+
+# print(sm.data)
+# sm.details('Jayakumar','Visakhapatnam') # Here we are accessing via module name
+
+#from keyword helps you to get required attributes from the module without importing the whole module
+
+# import sampleModule
+# from sampleModule import data
+# print(data.items())
+#print(details()) raises error as its not imported
+# print(sampleModule.__doc__) #it returns the docstring (description) of the module.
+
+#We can use * to get all the attributes and methods of a module. But it's not recommended as it wastes memory and can lead to name collision.
+# from sampleModule import *
+# print(data.items())
 
 '''

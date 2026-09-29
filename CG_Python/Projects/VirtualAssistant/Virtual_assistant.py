@@ -88,11 +88,12 @@ def va(data):
         speak("Playing Movie")
         cm.video()
     
-    elif "qr" in data.lower():  #Generates a QR code for a website link
+    elif "qr" in data.lower():  #Generates a QR code for a website link and opens it
         speaking = True
         speak("Tell me a website link to generate QR Code for...")
         cm.qrgen(input("Enter website link : "))
         speak("QR code generated successfully")
+        speak("Opening QR Code...")
     
     elif "rock paper scissors" in data.lower():  #Plays rock, paper, scissors with the user
         speaking = True

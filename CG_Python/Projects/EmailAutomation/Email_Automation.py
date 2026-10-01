@@ -26,7 +26,7 @@ server = smtplib.SMTP("smtp.gmail.com", 587)
 server.starttls()
 
 #login
-server.login("vegijaykumar@gmail.com","tzsq bwxi ymzk oaxo")
+server.login("vegijaykumar@gmail.com","tzsq bwxi ym3zk oaxo")
 
 #now create the message
 # msg = "This is a test email sent from Python!"

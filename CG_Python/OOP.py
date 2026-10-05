@@ -47,7 +47,12 @@ class ClassName:
 Encapsulation: It takes one of the key properties of OOP, which bundles the data including attributes and methods into a single class.
                It provides accessibility (Public, Private, Protected) to the object's attributes and methods.
 
-Inheritance: 
+-> Public Attributes --> These are defined inside the class and can be modified outside the class.
+
+-> Protected Attributes --> This is generally prefered in developer point of view as a hint, we generally use single underscore(_) before the attribute name. They can also be modified outside the class.
+
+-> Private Attributes --> In this case we make the attribute name with double leading underscores(__), in vary specific cases where attribute need not be accessed directly.
+                          Python breaches it by name mangling, but we prefer usage of setters and getters or accessors/modifiers
 
 #Students class with basic details
 
@@ -147,5 +152,109 @@ print("\n")
 c2.display()
 print("\n")
 c3.display()
+
+class Users:
+    '''Users data'''
+    def __init__(self, name, _otp, __password):
+        self.username = name    #Public Attributes
+        self._otp = _otp        #Protected Attributes
+        self.__password = __password  #Private Attributes
+
+    def details(self):
+        print("Username:",self.username)
+
+u1 = Users("Jayakumar",5967, "Jayakumar@2004")
+u1.details()
+print(u1._otp)
+# print(u2.__password)   #Raises AttributeError as we made it Private
+print(u1._Users__password)   #here namemangling is used as we can access private attribute by classname with leading usage...
+#Modifying public attribute
+u1.username = "Veera"
+u1.details()
+#Modifying protected attribute
+u1._otp = 7851  
+print(u1._otp)
+#Modifying private attribute
+u1._Users__password = "Veera@2004" 
+print(u1._Users__password)
+
+#As NameMangling is not a recommended approach we make use of accessors and modifiers in python
+
+class Users:
+    '''Users data'''
+    def __init__(self, name, _otp, __password):
+        self.username = name    #Public Attributes
+        self._otp = _otp        #Protected Attributes
+        self.__password = __password  #Private Attributes
+
+    #To moke use of private attributes (getter method)
+    def get_password(self):
+        return "********"
+        # return self.__password
+
+    #To modify the private attribute (setter method)
+    def set_password(self, new_password):
+        if len(new_password) >= 6:
+            self.__password = new_password
+            print("Password changed successfully")
+        else:
+            print("Password length should be at least 6 characters")
+
+    def details(self):
+        print("Username:",self.username)
+        print("OTP:",self._otp)
+
+u2 = Users("Siva",2000,"Siva@2004")
+u2.details()
+print(u2.get_password())
+print(u2.__dict__)
+u2.set_password("sakthi@2005")   #Password length condition is satisfied
+print(u2.get_password())
+print(u2.__dict__)
+u2.set_password("rani")   #Password length condition is not satisfied
+print(u2.get_password())
+print(u2.__dict__)
+
+So we prefer usage of accessors/modifiers instead of name mangling in case of Private attributes to access and modify the data, we can use it for protected attributes too.
+
+# Task: Use Getter and Setter methods for both Protected and Private attibutes (take a new scenario), additionally u can also have public attributes...
+
+Inheritance: It is a mechanism in OOP where one class (child or derived class) acquires or inherits the properties (attributes and methods) of another class (parent or base class).
+             Single Inheritance, Multiple Inheritance, Multilevel Inheritance, Hierarchical Inheritance, Hybrid Inheritance.
+
+Syntax: 
+class Base_class:  # parent class / Super class
+    statements....
+class Derived_Class(Base_Class):  # Child class / Sub class
+    statements...
+
+#Single Inheritance --> eg:FingurePrint
+class A:
+    statements...
+class B(A):
+    statements...
+
+#Example of Single Inheritance: Social Media Login
+
+class Users:
+    def __init__(self,fname,lname):
+        self.fname = fname
+        self.lname = lname
+    
+    def full_name(self):
+        return self.fname + " " + self.lname
+
+class Users_v1(Users):
+    pass    #This is a placeholder (Only for syntax)
+
+class Users_v2(Users):
+    def update_name(self):
+        return self.fname.title().strip() + " " + self.lname.title().strip()
+
+u1 = Users_v2("jayakumar  ","   vegi")
+print(u1.full_name())
+print(u1.update_name())
+
+Using SIngle Inheritance we will make use of class attributes and class methods along with the importance of super() (constructor Overriding/Method Overriding)
 
 """

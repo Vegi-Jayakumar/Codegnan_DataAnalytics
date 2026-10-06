@@ -255,6 +255,144 @@ u1 = Users_v2("jayakumar  ","   vegi")
 print(u1.full_name())
 print(u1.update_name())
 
-Using SIngle Inheritance we will make use of class attributes and class methods along with the importance of super() (constructor Overriding/Method Overriding)
+Using Single Inheritance we will make use of class attributes and class methods along with the importance of super() (constructor Overriding/Method Overriding)
+
+#Banking Scenario --> Single Inheritance
+
+class RBI:
+    '''Base Class'''
+    cash = 10000000  #Class Variable
+    #Class Method
+    @classmethod
+    def available_cash(cls):
+        print("RBI has cash worth", RBI.cash)
+
+class SBI(RBI):
+    '''Derived Class(1)'''
+    pass
+
+class HDFC(RBI):
+    '''Derived Class(2)'''
+    cash = 5000000  #Class Variable
+    @classmethod
+    def hdfc_cash(cls):
+        print("HDFC has cash worth",HDFC.cash)
+        print("Total Cash",HDFC.cash + RBI.cash)
+
+u1 = HDFC()
+u1.available_cash()
+u1.hdfc_cash()
+
+#Task 1: Convert same to Hierarchical also make use of public, private attributes along with classmethods, class variables have functions like credit and debit within different bank classes
+
+#Kid-Father Property Scenario --> Constructor Overriding, Method Overriding
+
+class Father:
+    '''Father property interms of cash'''
+    def __init__(self):
+        self.property = 10000000
+
+    def father_prop(self):
+        print("Father has property worth",self.property)
+
+class Child(Father):
+    '''Child inheriting father property and having his own property'''
+    def __init__(self):
+        self.property = 500000
+    
+    def child_prop(self):
+        print("Child has property worth", self.property)
+        print("Total property", self.property + self.property)
+
+obj = Child()
+obj.father_prop()
+obj.child_prop()
+
+#In above we have seen constructor overriding, as we defined construtors in both base class(parent class) and derived class(child class), child class constructor has overridden the constructor of parent class.
+
+#Constructor Overriding can be avoided by using of super() --> super().__init__() and super().__init__(args)
+
+class Father:
+    '''Father property interms of cash'''
+    def __init__(self):
+        self.f_property = 10000000
+
+    def father_prop(self):
+        print("Father has property worth",self.f_property)
+
+class Child(Father):
+    '''Child inheriting father property and having his own property'''
+    def __init__(self):
+        super().__init__()    #Calling super class constructor
+        self.c_property = 500000
+    
+    def child_prop(self):
+        print("Child has property worth", self.c_property)
+        print("Total property", self.c_property + self.f_property)
+
+obj = Child()
+obj.father_prop()
+obj.child_prop()
+
+class Father:
+    '''Father property interms of cash'''
+    def __init__(self, f_property):
+        self.f_property = f_property
+
+    def father_prop(self):
+        print("Father has property worth",self.f_property)
+
+class Child(Father):
+    '''Child inheriting father property and having his own property'''
+    def __init__(self,f_property,c_property):
+        super().__init__(f_property)    #Calling Super class Constructor with arguments
+        self.c_property = c_property
+    
+    def child_prop(self):
+        print("Child has property worth", self.c_property)
+        print("Total property", self.c_property + self.f_property)
+
+obj = Child(10000000,500000)
+obj.father_prop()
+obj.child_prop()
+
+#Method Overriding --> When we define same method same in parent class and also in child class, it will result in Method Overriding, to get rid of this we prefer super().method()
+
+class Square:
+    '''Base class'''
+    def __init__(self,x):
+        self.side = x
+    
+    def area(self):
+        print(f"Area of Square with side {self.side}: {self.side * self.side}")
+
+class Rectangle(Square):
+    '''Derived Class(1)'''
+    def __init__(self,x,y):
+        super().__init__(x)   #Calling Super class constructor
+        self.length = y
+    
+    def area(self):
+        super().area()  # Calling Super class method
+        print(f"Area of Rectangle with length {self.length} and breadth {self.side}: {self.side * self.length}")
+
+x,y = map(int, input("Enter digits: ").split())
+a1 = Rectangle(x,y)
+a1.area()
+
+#Method Overriding will only happen with Inheritance usage
+
+#Multiple Inheritance --> One derived class acquiring properites from two or more base classes
+#Parent (Father, Mother) --> Child
+
+Syntax:
+class A:
+    statements...
+class B:
+    statements...
+class C(A,B):
+    statements...
+
+#Task2: Bring out a real time scenario for Multiple Inheritance
 
 """

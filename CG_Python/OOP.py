@@ -395,4 +395,220 @@ class C(A,B):
 
 #Task2: Bring out a real time scenario for Multiple Inheritance
 
+#Multiple Inheritance --> Whatsapp Scenario --> Send messages, video call
+
+class Messages:
+    '''base class 1'''
+    def send_message(self):
+        print("Used for sending messages")
+
+class Voice_Calls:
+    '''base class 2'''
+    def voice_call(self):
+        print("Used for making voice calls")
+
+class Whatsapp(Messages, Voice_Calls):
+    '''derived class'''
+    def video_call(self):
+        print("Used for making Video Calls")
+
+u1 = Whatsapp()
+u1.voice_call()
+u1.send_message()
+u1.video_call()
+
+#Multilevel Inheritance
+
+#Syntax:
+
+class A:
+    statements...
+class B(A):
+    statements...
+class C(B):
+    statements...
+
+#Whatsapp --> Users, Business_User, Verified_User --> Multilevel Inheritance
+
+class Users:
+    '''Base Class'''
+    def send_messages(self):
+        print("Used for sending messages")
+
+class Business_User(Users):
+    '''Business_user class'''
+    def send_bulk_messages(self):
+        print("Used for sending bulk messages")
+
+class Verified_User(Business_User):
+    '''Verified_user class'''
+    def avatars(self):
+        print("User can create avatars")
+
+print("Normal User:")
+u1 = Users()
+u1.send_messages()
+print("\n")
+
+print("Business User:")
+u2 = Business_User()
+u2.send_messages()
+u2.send_bulk_messages()
+print("\n")
+
+print("Verified User:")
+u3 = Verified_User()
+u3.send_messages()
+u3.send_bulk_messages()
+u3.avatars()
+print("\n")
+
+#Hybrid Inheritance --> Combination of two or more types of Inheritance
+
+#Example of Hybrid Inheritance --> Electronic Devices --> combination of Multiple and Multilevel Inheritance
+
+class Internet:
+    '''Base class 1'''
+    def surfing(self):
+        print("Used for web Surfing")
+
+class Message:
+    '''Base class 2'''
+    def message(self):
+        print("Used for messaging")
+
+class Camera:
+    '''Base class 3'''
+    def photos(self):
+        print("Used for taking photos")
+
+class Voice_Calls:
+    '''Base Class 4'''
+    def voice_call(self):
+        print("Used for making voice calls")
+
+class Computer(Internet, Message):
+    '''Derived class 1'''
+    def emails(self):
+        print("Used for sending emails")
+
+class Tablet(Computer, Camera):
+    '''Derived class 2'''
+    def entertainment(self):
+        print("Used for entertainment")
+
+class Smart_phone(Tablet, Voice_Calls):
+    '''Derived class 3'''
+    def calling(self):
+        print("Used for emails, internet, entertainment, photos, voice calls and etc...")
+
+comp = Computer()
+comp.emails()
+comp.message()
+comp.surfing()
+
+Tablet = Tablet()
+Tablet.entertainment()
+Tablet.emails()
+Tablet.message()
+Tablet.surfing()
+
+Smart_phone = Smart_phone()
+Smart_phone.calling()
+Smart_phone.entertainment()
+Smart_phone.photos()
+Smart_phone.message()
+Smart_phone.surfing()
+Smart_phone.voice_call()
+
+#Polymorphism --> Poly(Many)+Morphism(Forms) --> Many Forms
+#Method Overloading, Method Overriding, Operator overloading
+
+#Example: Hotstar --> Free User, VIP User, Premium User
+
+class Hotstar:
+    '''Method Overloading scenario'''
+    def watch(self):
+        print("User has logged in")
+    
+    def watch(self,movie_name):
+        print("Watching Movie:",movie_name)
+    
+raju = Hotstar()
+raju.watch("RRR")
+
+#In the above case same watch() method is overloaded so to make specific usage of, we will make the usage of default arguments
+
+class Hotstar:
+    '''Method Overloading scenario'''
+    def watch(self,movie_name = None):
+        self.movie_name = movie_name
+        if self.movie_name == None:
+            print("User has logged in")
+        else:
+            print("Watching Movie:",self.movie_name)
+    
+raju = Hotstar()
+raju.watch()
+raju.watch("RRR")
+
+#Method Overloading with variable length arguments (*args)
+
+class Hotstar:
+    '''MOL with *args usage'''
+    def add_to_list(self,*movies):
+        for movie in movies:
+            print("Movie added:",movie)
+    
+user = Hotstar()
+user.add_to_list("RRR","Pushpa","KGF")
+
+#Method Overloading with type of arguments usage
+class Hotstar:
+    '''MOL with type of args usage'''
+    def movieslist(self,content):
+        if isinstance(content,str):
+            print("Playing Content",content)
+        elif isinstance(content,list):
+            for movie in content:
+                print(movie,"added to watchlist")
+        else:
+            print("Enter valid input")
+    
+user = Hotstar()
+user.movieslist("RRR")
+user.movieslist(["RRR","Pushpa","KGF"])
+
+#Method Overriding --> if same method is used in both base and derived class
+
+class FreeUser:
+    def watch(self):
+        print("Only limited content is available along with ads")
+
+class VIPUser(FreeUser):
+    def watch(self):
+        super().watch()
+        print("All content is available along with ads")
+
+class PremiumUser(VIPUser):
+    def watch(self):
+        super().watch()
+        print("All content is available without ads")
+
+fu = FreeUser()
+vu = VIPUser()
+pu = PremiumUser()
+
+print("Free User:")
+fu.watch()
+print("\n")
+
+print("VIP User:")
+vu.watch()
+print("\n")
+
+print("Premium User:")
+pu.watch()
+print("\n")
+
 """

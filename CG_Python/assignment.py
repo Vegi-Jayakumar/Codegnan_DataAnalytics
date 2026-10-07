@@ -199,23 +199,23 @@ class Computer:
     def screen(self):
         print("Screen is used for displaying")
 
-    def internet(cls):
+    def internet(self):
         print("device is used for surfing the internet")
 
 class Phone:
     '''Base Class(2)'''
-    def call(cls):
+    def call(self):
         print("device is used for calling")
     
-    def message(cls):
+    def message(self):
         print("device is used for messaging")
 
 class Camera:
     '''Base Class(3)'''
-    def pic(cls):
+    def pic(self):
         print("This device takes pictures")
 
-    def vid(cls):
+    def vid(self):
         print("This device takes videos")
 
 class Smartphone(Computer, Phone, Camera):

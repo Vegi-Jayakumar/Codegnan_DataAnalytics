@@ -611,4 +611,83 @@ print("Premium User:")
 pu.watch()
 print("\n")
 
+#Polymorphism --> Operator Overloading --> usage of magic methods
+#If two operands are numericals, using + operator is addition, if two operands are strings, using + operator is concatenations, if two operands are lists, using + operator is merging
+
+eg:
+print(5+6)    #addition    #Output: 11
+print('5'+'6')  #concatenations    #Output: '56'
+print([5]+[6]) #merging    #Output: [5, 6]
+
+a = 7; b = 8
+print(a.__add__(b))   #same as a+b
+a = [1,2,3]; b = [4,5,6]
+print(a.__add__(b))   #same as [1,2,3]+[4,5,6]
+print(a.__len__())  #same as len([1,2,3])
+a.__delitem__(1)
+print(a)            #same as del a[1]
+
+#Now let us understand how above dunder methods such as __add__, __str__
+
+class WatchHistory:
+    '''We want to calculate the watchhistory of user'''
+    def __init__(self, hours):
+        self.hours = hours
+        
+a = WatchHistory(120)
+b = WatchHistory(40)
+print(a.__add__(b))  #AttributeError
+print(a.hours.__add__(b.hours))  #160
+
+class WatchHistory:
+    '''We want to calculate the watchhistory of user'''
+    def __init__(self, hours):
+        self.hours = hours
+    def __add__(self,value):
+        return self.hours + value.hours
+    def __str__(self):
+        return f"Total Hours {self.hours}"
+        
+a = WatchHistory(120)
+b = WatchHistory(40)
+print(a)
+print(b)
+print(a+b)
+
+#So in above case we are overloading our dunder add method
+
+#Abstraction --> It is one of the key feature of OOP which helps in implementing important information (hiding unneccessary details), if we want to invoke a specific method from a base class to be applied for all derived class
+#abc module
+
+from abc import ABC, abstractmethod
+
+#Example of Instagram --> Upload photo, upload video, upload reel, upload story
+class Content(ABC):
+    @abstractmethod
+    def upload(self):
+        pass
+
+class Photo_Upload(Content):
+    def upload(self):
+        print("Photo Uploaded")
+
+class Video_Upload(Content):
+    def upload(self):
+        print("Video Uploaded")
+
+class Story_Upload(Content):
+    def upload(self):
+        print("Story Uploaded")
+
+class Reel_Upload(Content):
+    def upload(self):
+        print("Reel Uploaded")
+
+contents = [Photo_Upload(),Video_Upload(),Story_Upload(),Reel_Upload()]
+print("Types of contents:")
+for content in contents:
+    content.upload()
+
+#The Method name should be same in all the derived classes as the abstractmethod name otherwise, AttributeError occurs
+
 """
